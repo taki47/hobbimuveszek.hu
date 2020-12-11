@@ -167,7 +167,7 @@ class AuthenticationController extends Controller
         }
     }
 
-    public function LostPAssword()
+    public function LostPassword()
     {
         return view("Auth.LostPassword");
     }
@@ -195,7 +195,75 @@ class AuthenticationController extends Controller
             return view('Auth.LostPasswordSent');
         } else {
             //nem létezik a user
-            return back()->withErrors(__('auth.lostPassword.emailError'));
+            return back()->withErrors(__('auth.lostPassword.emailError'))->withInput();
+        }
+    }
+
+    public function GenerateNewPassword($email, $confirm)
+    {
+        $user = User::where("email",$email)->where("confirm", $confirm)->first();
+        if ( $user ) {
+            //megvan a kód
+            return view("Auth.LostPasswordGenerate")
+                ->with("user", $user);
+        } else {
+            //nincs ilyen kód, hiba oldal
+
+            //log
+            Log::channel('daily')->info($this->logging->log("USER",$email,"LOST PASSWORD CONFIRM","FAILED"));
+
+            return view("Auth.LostPasswordConfirmError");
+        }
+    }
+
+    public function SendGenerateNewPassword(Request $request, $email, $confirm)
+    {
+        $user = User::where("email",$email)->where("confirm", $confirm)->first();
+        if ( $user ) {
+            //megvan a kód
+            
+            //jelszó ellenőrzése
+            $rules = [
+                'password' => [
+                        'required',
+                        'min:6',
+                        'regex:/^\S*(?=\S{6,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/',
+                        'confirmed'
+                ]
+            ];
+    
+            $messages = [
+                'password.required' => __('auth.register.validation.password'),
+                'password.min' => __('auth.register.validation.passwordLength'),
+                'password.regex' => __('auth.register.validation.passwordRegex'),
+                'password.confirmed' => __('auth.register.validation.passwordConfirm'),
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+
+            if ($validator->fails()) {
+                return back()
+                            ->withErrors($validator)
+                            ->withInput();
+            }
+
+            //beírom adatbázisba a jelszót
+            $user->password = Hash::make($request->password);
+            $user->confirm = null;
+            $user->save();
+
+            //log
+            Log::channel('daily')->info($this->logging->log("USER",$email,"LOST PASSWORD CHANGE","SUCCESS"));
+
+            //megerősítő oldal
+            return view('Auth.LostPasswordOk');
+        } else {
+            //nincs ilyen kód, hiba oldal
+
+            //log
+            Log::channel('daily')->info($this->logging->log("USER",$email,"LOST PASSWORD CONFIRM","FAILED"));
+
+            return view("Auth.LostPasswordConfirmError");
         }
     }
 

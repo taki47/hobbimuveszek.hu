@@ -7,12 +7,17 @@
     <title>Gallery page</title>
     <meta name="description" content="Gallery page" />
     <meta name="keywords" content="index, home" />
+    <link rel="shortcut icon" href="{{ asset("/assets/images/favicon.ico") }}" type="image/vnd.microsoft.icon" />
+    <link rel="canonical" href="{{ env("APP_URL") }}" />
+    <link rel="shortlink" href="{{ env("APP_URL") }}" />
+    <link rel="apple-touch-icon" href="{{ asset("/assets/images/apple-touch-icon.png") }}" type="image/png" />
+    <link rel="apple-touch-icon-precomposed" href="{{ asset("/assets/images/apple-touch-icon.png") }}" type="image/png" />
     <link rel="stylesheet" href="{{ asset("/assets/css/mds-icons.min.css?ver=".env("APP_VER")) }}" />
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset("/assets/css/main.min.css?ver=".env("APP_VER")) }}" />
     <link rel="stylesheet" href="{{ asset("/assets/css/default.min.css?ver=".env("APP_VER")) }}" />
     <link rel="stylesheet" href="{{ asset("/assets/css/gallery.min.css?ver=".env("APP_VER")) }}" />
     <link rel="stylesheet" href="{{ asset("/assets/css/custom.css?ver=".env("APP_VER")) }}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700&display=swap">
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -55,17 +60,22 @@
                                 <li class="nav-item dropdown profile-dropdown p-r-0">
                                     <a class="nav-link dropdown-toggle a-profile" data-toggle="dropdown"
                                         href="javascript:void(0)" aria-expanded="false">
-                                        <img src="https://modesy.codingest.com/uploads/profile/avatar_5fbbca124bf028-95504430-35502300.jpg" alt="admin">
+                                        @if ( Auth::user()->avatar )
+                                            <img src="/uploads/avatars/{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}">
+                                        @else
+                                            <i class="fas fa-user-circle"></i>
+                                        @endif
+                                        
                                         {{ Auth::user()->name }} <i class="icon-arrow-down"></i>
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="https://modesy.codingest.com/admin/">
+                                            <a href="#">
                                                 <i class="icon-admin"></i>
                                                 Admin Panel </a>
                                         </li>
                                         <li>
-                                            <a href="https://modesy.codingest.com/dashboard/">
+                                            <a href="#">
                                                 <i class="icon-dashboard"></i>
                                                 Dashboard </a>
                                         </li>
@@ -75,27 +85,27 @@
                                                 Profile </a>
                                         </li>
                                         <li>
-                                            <a href="https://modesy.codingest.com/orders">
+                                            <a href="#">
                                                 <i class="icon-shopping-basket"></i>
                                                 Orders </a>
                                         </li>
                                         <li>
-                                            <a href="https://modesy.codingest.com/quote-requests">
+                                            <a href="#">
                                                 <i class="icon-price-tag-o"></i>
                                                 Quote Requests </a>
                                         </li>
                                         <li>
-                                            <a href="https://modesy.codingest.com/downloads">
+                                            <a href="#">
                                                 <i class="icon-download"></i>
                                                 Downloads </a>
                                         </li>
                                         <li>
-                                            <a href="https://modesy.codingest.com/messages">
+                                            <a href="#">
                                                 <i class="icon-mail"></i>
                                                 Messages&nbsp; </a>
                                         </li>
                                         <li>
-                                            <a href="https://modesy.codingest.com/settings/update-profile">
+                                            <a href="#">
                                                 <i class="icon-settings"></i>
                                                 Settings </a>
                                         </li>
@@ -130,7 +140,7 @@
                                     <div class="row-align-items-center">
                                         <div class="logo">
                                             <a href="/">
-                                                <img src="https://modesy.codingest.com/assets/img/logo.svg" alt="logo">
+                                                <img src="/assets/images/logo.jpg" alt="Hobbiművészek" title="Hobbiművészek">
                                             </a>
                                         </div>
                                         <div class="top-search-bar">
@@ -990,7 +1000,7 @@
                             </div>
                             <div class="mobile-logo">
                                 <a href="/">
-                                    <img src="https://modesy.codingest.com/assets/img/logo.svg" alt="logo" class="logo"></a>
+                                    <img src="/assets/images/logo.jpg" alt="Hobbiművészek" class="Hobbiművészek"></a>
                             </div>
                             <div class="mobile-search">
                                 <a class="search-icon"><i class="icon-search"></i></a>
@@ -1115,9 +1125,12 @@
                             </li>
                         @else
                             <li class="dropdown profile-dropdown nav-item">
-                                <a href="#" class="dropdown-toggle image-profile-drop nav-link" data-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <img src="https://modesy.codingest.com/uploads/profile/avatar_5fbbca124bf028-95504430-35502300.jpg" alt="admin">
+                                <a href="#" class="dropdown-toggle image-profile-drop nav-link mobile-profile" data-toggle="dropdown" aria-expanded="false">
+                                    @if ( Auth::user()->avatar )
+                                        <img src="/uploads/avatars/{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}">
+                                    @else
+                                        <i class="fas fa-user-circle"></i>
+                                    @endif
                                     {{ Auth::user()->name }} <span class="icon-arrow-down"></span>
                                 </a>
                                 <ul class="dropdown-menu">
@@ -1213,7 +1226,7 @@
                                 <div class="row-custom">
                                     <div class="footer-logo">
                                         <a href="/">
-                                            <img src="https://modesy.codingest.com/assets/img/logo.svg" alt="logo">
+                                            <img src="/assets/images/logo.jpg" alt="Amatőrművészek" title="Amatőrművészek">
                                         </a>
                                     </div>
                                 </div>
@@ -1318,7 +1331,7 @@
                 <div class="footer-bottom">
                     <div class="container">
                         <div class="copyright">
-                            Copyright 2020 Modesy - Minden jog fenntartva.
+                            Copyright 2020 Hobbiművészek.hu - Minden jog fenntartva.
                         </div>
                     </div>
                 </div>
@@ -1336,101 +1349,7 @@
     <script src="{{ asset("/assets/js/script.min.js?ver=".env("APP_VER")) }}"></script>
     <script src="https://www.google.com/recaptcha/api.js?render={{ env("GCAPTCHA_SITE_KEY") }}"></script>
     <script src="{{ asset("/assets/js/custom.js?ver=".env("APP_VER")) }}"></script>
-    <script>
-        $('<input>').attr({
-            type: 'hidden',
-            name: 'sys_lang_id',
-            value: '1'
-        }).appendTo('form[method="post"]');
-
-    </script>
-    <script>
-        var sys_lang_id = "1";
-        var base_url = "http://gallery.takiwebneked.hu/";
-        var lang_base_url = "http://gallery.takiwebneked.hu/";
-        var thousands_separator = ".";
-        var fb_app_id = "";
-        var csfr_token_name = "csrf_gallery_token";
-        var csfr_cookie_name = "csrf_gallery_token";
-        var is_recaptcha_enabled = false;
-        var txt_all = "All";
-        var sweetalert_ok = "OK";
-        var sweetalert_cancel = "Cancel";
-        var msg_accept_terms = "You have to accept the terms!";
-        var slider_fade_effect = "1";
-        is_recaptcha_enabled = true;
-        if ($('#category_products_slider_42').length != 0) {
-            $('#category_products_slider_42').slick({
-                autoplay: false,
-                autoplaySpeed: 4900,
-                infinite: true,
-                speed: 200,
-                swipeToSlide: true,
-                rtl: rtl,
-                cssEase: 'linear',
-                lazyLoad: 'progressive',
-                prevArrow: $('#category-products-slider-nav-42 .prev'),
-                nextArrow: $('#category-products-slider-nav-42 .next'),
-                slidesToShow: 5,
-                slidesToScroll: 1,
-                responsive: [{
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 4,
-                        slidesToScroll: 1
-                    }
-                }, {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 1
-                    }
-                }, {
-                    breakpoint: 576,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1
-                    }
-                }]
-            });
-        }
-        if ($('#category_products_slider_68').length != 0) {
-            $('#category_products_slider_68').slick({
-                autoplay: false,
-                autoplaySpeed: 4900,
-                infinite: true,
-                speed: 200,
-                swipeToSlide: true,
-                rtl: rtl,
-                cssEase: 'linear',
-                lazyLoad: 'progressive',
-                prevArrow: $('#category-products-slider-nav-68 .prev'),
-                nextArrow: $('#category-products-slider-nav-68 .next'),
-                slidesToShow: 5,
-                slidesToScroll: 1,
-                responsive: [{
-                    breakpoint: 992,
-                    settings: {
-                        slidesToShow: 4,
-                        slidesToScroll: 1
-                    }
-                }, {
-                    breakpoint: 768,
-                    settings: {
-                        slidesToShow: 3,
-                        slidesToScroll: 1
-                    }
-                }, {
-                    breakpoint: 576,
-                    settings: {
-                        slidesToShow: 2,
-                        slidesToScroll: 1
-                    }
-                }]
-            });
-        }
-
-    </script>
+    <script src="https://kit.fontawesome.com/a00cdb7d90.js"></script>
 </body>
 
 </html>

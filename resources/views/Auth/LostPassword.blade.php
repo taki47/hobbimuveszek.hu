@@ -20,8 +20,10 @@
 
         <div class="form-group">
             <label for="inputEmail" class="sr-only">{{ __('auth.lostPassword.email') }}</label>
-            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="{{ __('auth.lostPassword.email') }}" required autofocus>
+            <input type="email" name="email" id="inputEmail" class="form-control" placeholder="{{ __('auth.lostPassword.email') }}" required autofocus value="{{ old("email") }}">
         </div>
+
+        <input type="text" name="tmp" id="inputTmp">
 
         <button  class="btn btn-success text-white" type="button" id="lostPasswordButton">{{ __('auth.lostPassword.submit') }}</button>
     </form>

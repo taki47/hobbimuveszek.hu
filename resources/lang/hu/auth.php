@@ -83,6 +83,20 @@ return [
         'sent' => [
             'title' => 'Elfelejtett jelszó',
             'description' => 'A megadott e-mail címre elküldtük a jelszó visszaállításhoz szükséges linket!',
+        ],
+        'confirmError' => [
+            'title' => 'Az új jelszó megadása nem sikerült!',
+            'description' => 'Nem találtunk a megadott e-mail címre és kódra felhasználót!<br /><br />Kérjük próbáld meg újra!'
+        ],
+        'confirmOk' => [
+            'title' => 'A jelszó változtatás sikeres!',
+            'description' => 'Sikeresen megerősítetted megváltozott a jelszavad, most már be tudsz jelentkezni az oldalra.'
+        ],
+        'generate' => [
+            'title'         => 'Új jelszó megadása',
+            'password'      => 'Új jelszó',
+            'passwordRetry' => 'Új jelszó újra',
+            'submit'        => 'Jelszó megváltoztatása'
         ]
     ]
 ];

@@ -28,10 +28,10 @@ Route::get("/regisztracio", "AuthenticationController@Register")->name("register
 Route::get("/regisztracio-sikeres", "AuthenticationController@RegisterSuccess")->name("registerSuccess");
 Route::post("/regisztracio", "AuthenticationController@SendRegister")->name("sendRegister");
 
+Route::get("/elfelejtett-jelszo/uj-jelszo/{email}/{confirmCode}", "AuthenticationController@GenerateNewPassword")->name("generateNewPassword");
+Route::post("/elfelejtett-jelszo/uj-jelszo/{email}/{confirmCode}", "AuthenticationController@SendGenerateNewPassword")->name("sendGenerateNewPassword");
 Route::get("/elfelejtett-jelszo", "AuthenticationController@LostPassword")->name("lostPassword");
 Route::post("/elfelejtett-jelszo", "AuthenticationController@SendLostPassword")->name("sendLostPassword");
-Route::get("/elfelejtett-jelszo/uj-jelszo", "AuthenticationController@GenerateNewPassword")->name("generateNewPassword");
-Route::post("/elfelejtett-jelszo/uj-jelszo", "AuthenticationController@GenerateNewPassword")->name("sendGenerateNewPassword");
 
 Route::get("/kijelentkezes", "AuthenticationController@Logout")->name("logout");
 

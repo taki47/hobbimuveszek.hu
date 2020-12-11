@@ -25,3 +25,24 @@ $("#lostPasswordButton").on("click", function () {
         });;
     });    
 });
+
+$("#lostPasswordForm").on("keypress", function(e) {
+    if ( e.which == 13 )
+        $("#lostPasswordButton").click();
+});
+
+/** lostpassword generate */
+$("#lostPasswordGenerateButton").on("click", function () {
+    let siteKey = $("#siteKey").val();
+    grecaptcha.ready(function() {
+        grecaptcha.execute(siteKey, {action: 'lostPasswordGenerate'}).then(function(token) {
+            $("#lostPasswordGenerateForm").prepend('<input type="hidden" name="gRecaptchaResponse" value="' + token + '">');
+            $("#lostPasswordGenerateForm").submit();
+        });;
+    });    
+});
+
+$("#lostPasswordGenerateForm").on("keypress", function(e) {
+    if ( e.which == 13 )
+        $("#lostPasswordGenerateButton").click();
+});

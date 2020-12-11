@@ -2,7 +2,30 @@
     margin-top: 30px;
 }
 
+/** header */
+.logo a {
+    margin: auto;
+}
+
+.mobile-logo img {
+    max-height:50px;
+}
+
+.profile-dropdown i.fas {
+    font-size: 20px;
+}
+
+.mobile-profile i.fas {
+    float: left !important;
+    padding-right: 10px;
+}
+
 /**register*/
 .term {
     text-decoration: underline;
+}
+
+/** lost pwd */
+#inputTmp {
+    display: none;
 }
