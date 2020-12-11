@@ -35,3 +35,9 @@ Route::post("/elfelejtett-jelszo", "AuthenticationController@SendLostPassword")-
 
 Route::get("/kijelentkezes", "AuthenticationController@Logout")->name("logout");
 
+Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
+    Route::get("/dashboard","Admin\AdminController@Dashboard")->name("adminDashboard");
+
+    /** USERS */
+    Route::get("/users","Admin\UserController@index")->name("adminUsers");
+});

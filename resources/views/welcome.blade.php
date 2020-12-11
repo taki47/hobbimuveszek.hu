@@ -2,7 +2,6 @@
 
 @section('content')
 <div class="section-slider">
-
     <div class="index-main-slider container-fluid">
         <div class="row">
             <div class="slider-container">

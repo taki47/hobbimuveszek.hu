@@ -1,0 +1,14 @@
+.profile_pic i {
+    width: 70%;
+    margin-left: 15%;
+    z-index: 1000;
+    position: inherit;
+    margin-top: 32px;
+    padding: 4px;
+    text-align: center;
+    font-size: 30px;
+}
+
+.tile_row {
+    width: 100% !important;
+}

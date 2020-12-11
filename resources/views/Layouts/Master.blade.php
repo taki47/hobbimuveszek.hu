@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 
 <head>
     <meta charset="utf-8">
@@ -70,9 +70,9 @@
                                     </a>
                                     <ul class="dropdown-menu">
                                         <li>
-                                            <a href="#">
+                                            <a href="{{ route("adminDashboard") }}">
                                                 <i class="icon-admin"></i>
-                                                Admin Panel </a>
+                                                Adminisztráció </a>
                                         </li>
                                         <li>
                                             <a href="#">
@@ -1135,9 +1135,9 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li>
-                                        <a href="https://modesy.codingest.com/admin/">
+                                        <a href="{{ route("adminDashboard") }}">
                                             <i class="icon-admin"></i>
-                                            Admin Panel </a>
+                                            Adminisztráció </a>
                                     </li>
                                     <li>
                                         <a href="https://modesy.codingest.com/dashboard/">
