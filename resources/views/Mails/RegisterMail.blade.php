@@ -331,9 +331,9 @@
                                         <h1 style="text-align:center;">Kedves {{ $user->name }}!</h1>
                                         Köszönjük, hogy regisztráltál a {{ env("APP_URL") }} oldalra.<br /><br />
                                         
-                                        A regisztrációd véglegesítéséhez kérjük kattints <a href="{{ route("confirm",[$user->email,$user->confirm]) }}">IDE</a><br />
+                                        A regisztrációd véglegesítéséhez kérjük kattints <a href="{{ route("registerStepTwo",[$user->email,$user->confirm]) }}">IDE</a><br />
                                         Amennyiben a gomb nem működik, vagy nem tudsz rákattintani, másold ki az alábbi URL-t, és illeszd be a böngésződbe:<br />
-                                        {{ route("confirm",[$user->email,$user->confirm]) }}
+                                        {{ route("registerStepTwo",[$user->email,$user->confirm]) }}
 
                                         <br /><br />
 

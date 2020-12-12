@@ -8,12 +8,18 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
+use Image;
 
 use App\Mail\RegisterMail;
 use App\Mail\LostPasswordMail;
 use App\Models\Province;
 use App\Models\User;
 use App\Logging;
+use App\Models\Social_media;
+use App\Models\User_billing_data;
+use App\Models\User_social_media;
 
 class AuthenticationController extends Controller
 {
@@ -44,7 +50,7 @@ class AuthenticationController extends Controller
         }
 
         $credentials = $request->only('email', 'password');
-        $credentials["user_status_id"] = ["2","3", "4"];
+        $credentials["user_status_id"] = "2";
         
         if (Auth::attempt($credentials,$request->remember)) {
             //auth passed
@@ -59,10 +65,7 @@ class AuthenticationController extends Controller
      */
     public function Register()
     {
-        $provinces = Province::all();
-
-        return view('Auth.Register')
-            ->with("provinces", $provinces);
+        return view('Auth.Register');
     }
 
     public function SendRegister(Request $request)
@@ -80,10 +83,6 @@ class AuthenticationController extends Controller
                     'regex:/^\S*(?=\S{6,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/',
                     'confirmed'
             ],
-            'address1' => 'required',
-            'city'     => 'required',
-            'state'    => 'required',
-            'zip'      => 'required|integer',
             'term'     => 'required'
         ];
 
@@ -96,11 +95,6 @@ class AuthenticationController extends Controller
             'password.min' => __('auth.register.validation.passwordLength'),
             'password.regex' => __('auth.register.validation.passwordRegex'),
             'password.confirmed' => __('auth.register.validation.passwordConfirm'),
-            'address1.required' => __('auth.register.validation.address1'),
-            'city.required' => __('auth.register.validation.city'),
-            'state.required' => __('auth.register.validation.state'),
-            'zip.required' => __('auth.register.validation.zip'),
-            'zip.integer' => __('auth.register.validation.zipInteger'),
             'term.required' => __('auth.register.validation.term'),
         ];
 
@@ -115,18 +109,23 @@ class AuthenticationController extends Controller
         //megerősítő kód előállítása
         $confirmCode = Self::GetConfirmCode();
         
+        //slug előállítása
+        $slug = Str::slug($request->name);
+        $slugCount = User::whereRaw("slug REGEXP '^{$slug}(-[0-9]*)?$'")->count();
+        if ( $slugCount>0 )
+            $slug = $slug."-".$slugCount;
+
+        //könyvtár létrehozása
+        $path = public_path()."/uploads/".$slug;
+        File::makeDirectory($path);
 
         //regisztrálom adatbázisba
         $user = new User();
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = Hash::make($request->password);
-        $user->address = $request->address1;
-        $user->address2 = $request->address2;
-        $user->city = $request->city;
-        $user->province_id = $request->state;
-        $user->postcode = $request->zip;
         $user->confirm = $confirmCode;
+        $user->slug = $slug;
         $user->save();
 
         //log
@@ -144,27 +143,248 @@ class AuthenticationController extends Controller
         return view("Auth.RegisterSuccess");
     }
 
-    public function Confirm($email,$confirmCode)
+    public function RegisterStepTwo($email,$confirmCode)
     {
         $user = User::where("email",$email)->where("confirm", $confirmCode)->first();
         if ( $user ) {
-            //státusz átállítása, megerősítő oldalra továbbítása
-            $user->user_status_id = "2";
-            $user->confirm = null;
-            $user->save();
-
             //log
             Log::channel('daily')->info($this->logging->log("USER",$user->id,"NEW USER CONFIRM","SUCCESS"));
 
-            return view("Auth.ConfirmOk");
+            $provinces = Province::all();
+            $socialMedias = Social_media::all();
+
+            return view("Auth.RegisterStepTwo")
+                ->with("provinces", $provinces)
+                ->with("socialMedias", $socialMedias)
+                ->with("user",$user);
         } else {
             //nincs ilyen kód, hiba oldal
 
             //log
             Log::channel('daily')->info($this->logging->log("USER",$email,"NEW USER CONFIRM","FAILED"));
 
-            return view("Auth.ConfirmError");
+            return view("Auth.RegisterConfirmError");
         }
+    }
+
+    public function SendRegisterStepTwo(Request $request,$email,$confirmCode)
+    {
+        $user = User::where("email",$email)->where("confirm", $confirmCode)->first();
+        if ( $user ) {
+            if ( $request->registerRole=="3" ) {
+                //művész regisztráció
+                //beérkezett adatok ellenőrzése
+                $rules = [
+                    'state'    => 'required|string',
+                    'zip'      => 'required|integer',
+                    'city'     => 'required|string',
+                    'address'  => 'required|string',
+                ];
+                $messages = [
+                    'state.required'    => __('auth.register.validation.name'),
+                    'zip.required'      => __('auth.register.validation.zip'),
+                    'zip.integer'       => __('auth.register.validation.zipInteger'),
+                    'city.required'     => __('auth.register.validation.city'),
+                    'address.required'  => __('auth.register.validation.address'),
+                ];
+                $validator = Validator::make($request->all(), $rules, $messages);
+                if ($validator->fails()) {
+                    return back()
+                                ->withErrors($validator)
+                                ->withInput();
+                }
+
+                //ha céges adatokat adott meg, cégnév, adószám kötelező
+                if ( $request->billingType=="2" ) {
+                    $rules = [
+                        'companyName' => 'required|string',
+                        'taxNumber'   => 'required|string',
+                    ];
+                    $messages = [
+                        'companyName.required' => __('auth.register.validation.companyName'),
+                        'taxNumber.required'   => __('auth.register.validation.taxNumber'),
+                    ];
+                    $validator = Validator::make($request->all(), $rules, $messages);
+                    if ($validator->fails()) {
+                        return back()
+                                    ->withErrors($validator)
+                                    ->withInput();
+                    }
+                }
+
+                //avatar file mentése
+                $avatarAvailable = 0;
+                if ( $request->file('avatar') ) {
+                    $image = $request->file('avatar');
+                    
+                    //méret
+                    $size = $image->getSize();
+                    if ( $size==0 )
+                        return back()
+                            ->withErrors(__('auth.register.validation.avatarSize'))
+                            ->withInput();
+
+                    //csak kép
+                    $mimeType = explode("/",$image->getClientMimeType());
+                    if ( $mimeType[0]!="image" )
+                        return back()
+                            ->withErrors(__('auth.register.validation.avatarIsImage'))
+                            ->withInput();
+                    
+                    //megfelelő kiterjesztés
+                    $ext = $image->getClientOriginalExtension();
+                    if ( !($ext=="jpeg" || $ext=="png" || $ext=="jpg" || $ext=="gif") ) {
+                        return back()
+                            ->withErrors(__('auth.register.validation.avatarMimeType'))
+                            ->withInput();
+                    }
+                    
+                    $imageInfo = pathinfo($image->getClientOriginalName());
+                    $imageName = "avatar.png";
+                    $destinationPath = public_path("/uploads/".$user->slug."/");
+                    
+                    $img = Image::make($image->path());
+                    $img->resize(100, 100, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })
+                    ->encode("png")
+                    ->save($destinationPath.'/'.$imageName);
+
+                    $avatarAvailable = 1;
+                }
+
+                //minden ok, mehet adatbázisba
+                //user adatainak elmentése
+                $user->phone          = $request->phone;
+                $user->description    = $request->description;
+                $user->avatar         = $avatarAvailable;
+                $user->website        = $request->website;
+                $user->confirm        = null;
+                $user->user_status_id = "2";
+                $user->user_role_id   = "3";
+                $user->save();
+
+                $log = "Phone: ".$request->phone.", Description: ".$request->description.", Avatar: ".$avatarAvailable.", Website: ".$request->website.", Confirm: null, User_status_id=2, User_role_id=3";
+                Log::channel('daily')->info($this->logging->log("USER",$user->id,"NEW USER REG STEP TWO",$log));
+
+                //számlázási cím mentése
+                $userBillingData = new User_billing_data();
+                $userBillingData->user_id = $user->id;
+                $userBillingData->billing_type_id = $request->billingType;
+                $userBillingData->company_name    = $request->companyName;
+                $userBillingData->tax_number      = $request->taxNumber;
+                $userBillingData->address         = $request->address;
+                $userBillingData->address2        = $request->address2;
+                $userBillingData->city            = $request->city;
+                $userBillingData->province_id     = $request->state;
+                $userBillingData->postcode        = $request->zip;
+                $userBillingData->save();
+
+                Log::channel('daily')->info($this->logging->log("USER_BILLING_DATA",$userBillingData->id,"NEW USER BILLING DATA","SUCCESS"));
+
+                //social mediák
+                $socialMedias = Social_media::all();
+                foreach ($socialMedias as $socialMedia) {
+                    if ( $request->get("social_".$socialMedia->id) ) {
+                        $userSocialMedia = new User_social_media();
+                        $userSocialMedia->social_media_id = $socialMedia->id;
+                        $userSocialMedia->user_id = $user->id;
+                        $userSocialMedia->url = $request->get("social_".$socialMedia->id);
+                        $userSocialMedia->save();
+
+                        Log::channel('daily')->info($this->logging->log("USER_SOCIAL_MEDIA",$userSocialMedia->id,"NEW USER SOCIAL MEDIA","SUCCESS"));
+                    }
+                }
+                //művész regisztráció
+            }
+
+            if ( $request->registerRole=="2" ) {
+                //vásárló regisztráció
+
+                //avatar file mentése
+                $avatarAvailable = 0;
+                if ( $request->file('avatar') ) {
+                    $image = $request->file('avatar');
+                    
+                    //méret
+                    $size = $image->getSize();
+                    if ( $size==0 )
+                        return back()
+                            ->withErrors(__('auth.register.validation.avatarSize'))
+                            ->withInput();
+
+                    //csak kép
+                    $mimeType = explode("/",$image->getClientMimeType());
+                    if ( $mimeType[0]!="image" )
+                        return back()
+                            ->withErrors(__('auth.register.validation.avatarIsImage'))
+                            ->withInput();
+                    
+                    //megfelelő kiterjesztés
+                    $ext = $image->getClientOriginalExtension();
+                    if ( !($ext=="jpeg" || $ext=="png" || $ext=="jpg" || $ext=="gif") ) {
+                        return back()
+                            ->withErrors(__('auth.register.validation.avatarMimeType'))
+                            ->withInput();
+                    }
+                    
+                    $imageInfo = pathinfo($image->getClientOriginalName());
+                    $imageName = "avatar.png";
+                    $destinationPath = public_path("/uploads/".$user->slug."/");
+                    
+                    $img = Image::make($image->path());
+                    $img->resize(100, 100, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })
+                    ->encode("png")
+                    ->save($destinationPath.'/'.$imageName);
+
+                    $avatarAvailable = 1;
+                }
+
+                //user adatainak elmentése
+                $user->phone          = $request->phone;
+                $user->description    = $request->description;
+                $user->avatar         = $avatarAvailable;
+                $user->website        = $request->website;
+                $user->confirm        = null;
+                $user->user_status_id = "2";
+                $user->user_role_id   = "2";
+                $user->save();
+
+                $log = "Phone: ".$request->phone.", Description: ".$request->description.", Avatar: ".$avatarAvailable.", Website: ".$request->website.", Confirm: null, User_status_id=2, User_role_id=2";
+                Log::channel('daily')->info($this->logging->log("USER",$user->id,"NEW USER REG STEP TWO",$log));
+
+                //social mediák
+                $socialMedias = Social_media::all();
+                foreach ($socialMedias as $socialMedia) {
+                    if ( $request->get("social_".$socialMedia->id) ) {
+                        $userSocialMedia = new User_social_media();
+                        $userSocialMedia->social_media_id = $socialMedia->id;
+                        $userSocialMedia->user_id = $user->id;
+                        $userSocialMedia->url = $request->get("social_".$socialMedia->id);
+                        $userSocialMedia->save();
+
+                        Log::channel('daily')->info($this->logging->log("USER_SOCIAL_MEDIA",$userSocialMedia->id,"NEW USER SOCIAL MEDIA","SUCCESS"));
+                    }
+                }
+                //vásárló regisztráció
+            }
+            
+            return redirect()->route("registerStepTwoSuccess");
+        } else {
+            //nincs ilyen kód, hiba oldal
+
+            //log
+            Log::channel('daily')->info($this->logging->log("USER",$email,"NEW USER CONFIRM","FAILED"));
+
+            return view("Auth.RegisterConfirmError");
+        }
+    }
+
+    public function RegisterStepTwoSuccess()
+    {
+        return view("Auth.RegisterConfirmOk");
     }
 
     public function LostPassword()

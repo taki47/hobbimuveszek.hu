@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Gallery page</title>
+    <title>{{ env("APP_NAME") }} | Üdvözöljük!</title>
     <meta name="description" content="Gallery page" />
     <meta name="keywords" content="index, home" />
     <link rel="shortcut icon" href="{{ asset("/assets/images/favicon.ico") }}" type="image/vnd.microsoft.icon" />
@@ -61,7 +61,7 @@
                                     <a class="nav-link dropdown-toggle a-profile" data-toggle="dropdown"
                                         href="javascript:void(0)" aria-expanded="false">
                                         @if ( Auth::user()->avatar )
-                                            <img src="/uploads/avatars/{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}">
+                                            <img src="/uploads/{{ Auth::user()->slug }}/avatar.png" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}">
                                         @else
                                             <i class="fas fa-user-circle"></i>
                                         @endif
@@ -1127,7 +1127,7 @@
                             <li class="dropdown profile-dropdown nav-item">
                                 <a href="#" class="dropdown-toggle image-profile-drop nav-link mobile-profile" data-toggle="dropdown" aria-expanded="false">
                                     @if ( Auth::user()->avatar )
-                                        <img src="/uploads/avatars/{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}">
+                                        <img src="/uploads/{{ Auth::user()->slug }}/avatar.png" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}">
                                     @else
                                         <i class="fas fa-user-circle"></i>
                                     @endif
@@ -1348,7 +1348,8 @@
     <script src="{{ asset("/assets/js/plugins.js?ver=".env("APP_VER")) }}"></script>
     <script src="{{ asset("/assets/js/script.min.js?ver=".env("APP_VER")) }}"></script>
     <script src="https://www.google.com/recaptcha/api.js?render={{ env("GCAPTCHA_SITE_KEY") }}"></script>
-    <script src="{{ asset("/assets/js/custom.js?ver=".env("APP_VER")) }}"></script>
+    <script src="{{ asset("/assets/js/grecaptcha.js?ver=".env("APP_VER")) }}"></script>
+    <script src="{{ asset("/assets/js/main.js?ver=".env("APP_VER")) }}"></script>
     <script src="https://kit.fontawesome.com/a00cdb7d90.js"></script>
 </body>
 

@@ -21,7 +21,7 @@ class CheckAdmin
             return redirect(route("login"));
 
         $user = Auth::user();
-        if ( $user->user_status_id!="4" )
+        if ( $user->user_role_id!="4" )
             return redirect(route("login"));
         
         return $next($request);

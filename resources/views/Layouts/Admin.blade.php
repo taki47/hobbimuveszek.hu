@@ -51,7 +51,7 @@
                     <div class="profile clearfix">
                         <div class="profile_pic">
                             @if ( Auth::user()->avatar )
-                            <img src="/uploads/avatar/{{ Auth::user()->avatar }}" alt="{{ Auth::user()->name }}"
+                            <img src="/uploads/{{ Auth::user()->slug }}/avatar.png" alt="{{ Auth::user()->name }}"
                                 class="img-circle profile_img">
                             @else
                             <i class="fas fa-user-circle"></i>
@@ -193,8 +193,7 @@
                                 <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true"
                                     id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
                                     @if ( Auth::user()->avatar )
-                                    <img src="/uploads/avatars/{{ Auth::user()->avatar }}"
-                                        alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}">
+                                    <img src="/uploads/{{ Auth::user()->slug }}/avatar.png" alt="{{ Auth::user()->name }}" title="{{ Auth::user()->name }}">
                                     @else
                                     <i class="fas fa-user-circle"></i>
                                     @endif

@@ -24,6 +24,22 @@
 .term {
     text-decoration: underline;
 }
+.regStepTwoArt, .regStepTwoVisitor {
+    padding: 10px;
+    cursor:pointer;
+}
+.regStepTwoArt:hover, .regStepTwoArt.active {
+    background-color: #f8ca9d;
+}
+.regStepTwoVisitor:hover, .regStepTwoVisitor.active {
+    background-color: #8ec9bb;
+}
+
+#regStepTwoArtRow, #regStepTwoVisitorRow {
+    margin-top: 10px;
+    padding: 10px;
+}
+
 
 /** lost pwd */
 #inputTmp {

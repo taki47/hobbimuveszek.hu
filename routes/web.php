@@ -23,7 +23,9 @@ Route::get('/', function () {
 Route::get("/bejelentkezes", "AuthenticationController@Login")->name("login");
 Route::post("/bejelentkezes", "AuthenticationController@LoginAttempt")->name("loginAttempt");
 
-Route::get("/regisztracio/megerosites/{Email}/{confirmCode}", "AuthenticationController@Confirm")->name("confirm");
+Route::get("/regisztracio/megerosites/{Email}/{confirmCode}", "AuthenticationController@RegisterStepTwo")->name("registerStepTwo");
+Route::post("/regisztracio/megerosites/{Email}/{confirmCode}", "AuthenticationController@SendRegisterStepTwo")->name("sendRegisterStepTwo");
+Route::get("/regisztracio/sikerult", "AuthenticationController@RegisterStepTwoSuccess")->name("registerStepTwoSuccess");
 Route::get("/regisztracio", "AuthenticationController@Register")->name("register");
 Route::get("/regisztracio-sikeres", "AuthenticationController@RegisterSuccess")->name("registerSuccess");
 Route::post("/regisztracio", "AuthenticationController@SendRegister")->name("sendRegister");
@@ -40,4 +42,6 @@ Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
 
     /** USERS */
     Route::get("/users","Admin\UserController@index")->name("adminUsers");
+    Route::get("/user/{id}","Admin\UserController@edit")->name("adminUserEdit");
+    Route::post("/user/{id}","Admin\UserController@update")->name("adminUserUpdate");
 });
