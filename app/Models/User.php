@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Kyslik\ColumnSortable\Sortable;
+use Illuminate\Support\Facades\Cache;
+
+use App\Models\User_billing_data;
 
 class User extends Authenticatable
 {
@@ -58,5 +61,15 @@ class User extends Authenticatable
     public function role()
     {
         return $this->belongsTo('App\Models\User_role', 'user_role_id', 'id');
+    }
+
+    public function isOnline()
+    {
+        return Cache::has('user-is-online-' . $this->id);
+    }
+
+    public function getFirstBillingData($userId)
+    {
+        return User_billing_data::where("user_id", $userId)->first();
     }
 }

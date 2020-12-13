@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\User;
+use App\Models\User_social_media;
 
 class ProfileController extends Controller
 {
@@ -51,7 +52,11 @@ class ProfileController extends Controller
         if ( !$user )
             abort(404);
 
-        return view('Profile.Show');
+        $socialMedias = User_social_media::where("user_id",$user->id)->get();
+
+        return view('Profile.Show')
+            ->with("user", $user)
+            ->with("socialMedias", $socialMedias);
     }
 
     /**
