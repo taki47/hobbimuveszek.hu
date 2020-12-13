@@ -19,3 +19,8 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 </IfModule>
+
+#Authtype Basic
+#AuthName "Put whatever you want here"
+#AuthUserFile /var/www/takiwebneked/data/www/gallery.takiwebneked.hu/public/.htpasswd
+#Require valid-user

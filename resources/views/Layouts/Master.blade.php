@@ -69,20 +69,19 @@
                                         {{ Auth::user()->name }} <i class="icon-arrow-down"></i>
                                     </a>
                                     <ul class="dropdown-menu">
+                                        @if ( Auth::user()->user_role_id=="4" )
+                                            <li>
+                                                <a href="{{ route("adminDashboard") }}">
+                                                    <i class="icon-admin"></i>
+                                                    {{ __('usermenu.administration') }}
+                                                </a>
+                                            </li>
+                                        @endif
                                         <li>
-                                            <a href="{{ route("adminDashboard") }}">
-                                                <i class="icon-admin"></i>
-                                                Adminisztráció </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <i class="icon-dashboard"></i>
-                                                Dashboard </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
+                                            <a href="{{ route("showProfile",Auth::user()->slug) }}">
                                                 <i class="icon-user"></i>
-                                                Profile </a>
+                                                {{ __('usermenu.profile') }}
+                                            </a>
                                         </li>
                                         <li>
                                             <a href="#">
@@ -1134,20 +1133,19 @@
                                     {{ Auth::user()->name }} <span class="icon-arrow-down"></span>
                                 </a>
                                 <ul class="dropdown-menu">
+                                    @if ( Auth::user()->user_role_id=="4" )
+                                        <li>
+                                            <a href="{{ route("adminDashboard") }}">
+                                                <i class="icon-admin"></i>
+                                                {{ __('usermenu.administration') }}
+                                            </a>
+                                        </li>
+                                    @endif
                                     <li>
-                                        <a href="{{ route("adminDashboard") }}">
-                                            <i class="icon-admin"></i>
-                                            Adminisztráció </a>
-                                    </li>
-                                    <li>
-                                        <a href="https://modesy.codingest.com/dashboard/">
-                                            <i class="icon-dashboard"></i>
-                                            Dashboard </a>
-                                    </li>
-                                    <li>
-                                        <a href="#">
+                                        <a href="{{ route("showProfile",Auth::user()->slug) }}">
                                             <i class="icon-user"></i>
-                                            Profile </a>
+                                            {{ __('usermenu.profile') }}
+                                        </a>
                                     </li>
                                     <li>
                                         <a href="https://modesy.codingest.com/orders">

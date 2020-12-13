@@ -37,6 +37,10 @@ Route::post("/elfelejtett-jelszo", "AuthenticationController@SendLostPassword")-
 
 Route::get("/kijelentkezes", "AuthenticationController@Logout")->name("logout");
 
+/** PROFILES */
+Route::get("/muvesz/{userSlug}","ProfileController@show")->name("showProfile");
+
+
 Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
     Route::get("/dashboard","Admin\AdminController@Dashboard")->name("adminDashboard");
 
