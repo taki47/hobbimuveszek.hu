@@ -46,7 +46,7 @@ class AuthenticationController extends Controller
 
     public function LoginAttempt(Request $request)
     {
-        if ( !Self::CheckCaptcha($request) ) {
+        if ( !\App\Http\Controllers\PublicController::CheckCaptcha($request) ) {
             return back()->withErrors(['captcha' => 'ReCaptcha Error']);
         }
 
@@ -395,7 +395,7 @@ class AuthenticationController extends Controller
 
     public function SendLostPassword(Request $request)
     {
-        if ( !Self::CheckCaptcha($request) ) {
+        if ( !\App\Http\Controllers\PublicController::CheckCaptcha($request) ) {
             return back()->withErrors(['captcha' => 'ReCaptcha Error']);
         }
 
