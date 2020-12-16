@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container main-container">
-    <form class="form-signin" method="POST" action="{{ route('sendRegister') }}">
+    <form class="form-signin" id="form" method="POST" action="{{ route('sendRegister') }}">
         @csrf
 
         <h1 class="text-center">{{ env("APP_NAME") }}</h1>
@@ -19,7 +19,7 @@
             @endforeach
         </div>
         @endif
-
+        
         <div class="form-group">
             <label for="inputName">* {{ __('auth.register.nameFieldLabel') }}</label>
             <input type="text" id="inputName" name="name" class="form-control {{ $errors->has("name") ? "is-invalid" : "" }}" placeholder="{{ __('auth.register.nameFieldPlaceholder') }}" required autofocus value="{{ old('name') }}">
@@ -52,8 +52,9 @@
                 </div>
             </div>
         </div>
+        <input type="hidden" name="gRecaptchaResponse" id="gRecaptchaResponse" value="">
         
-        <button class="btn btn-success text-white" type="submit">{{ __('auth.register.submitButton') }}</button>
+        <button class="btn btn-success text-white g-recaptcha" data-sitekey="{{ env("GCAPTCHA_SITE_KEY") }}" data-callback="sendForm">{{ __('auth.register.submitButton') }}</button>
     </form>
 </div>
 @endsection

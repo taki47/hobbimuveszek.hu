@@ -2,9 +2,8 @@
 
 @section('content')
 <div class="container main-container">
-    <form class="form-signin" id="lostPasswordForm" method="POST" action="{{ route('sendLostPassword') }}">
+    <form class="form-signin" id="form" method="POST" action="{{ route('sendLostPassword') }}">
         @csrf
-        <input type="hidden" name="siteKey" id="siteKey" value="{{ env("GCAPTCHA_SITE_KEY") }}">
 
         <h3 class="text-center">{{ __('auth.lostPassword.title') }}</h3>
 
@@ -23,9 +22,9 @@
             <input type="email" name="email" id="inputEmail" class="form-control" placeholder="{{ __('auth.lostPassword.email') }}" required autofocus value="{{ old("email") }}">
         </div>
 
-        <input type="text" name="tmp" id="inputTmp">
+        <input type="hidden" name="gRecaptchaResponse" id="gRecaptchaResponse" value="">
 
-        <button  class="btn btn-success text-white" type="button" id="lostPasswordButton">{{ __('auth.lostPassword.submit') }}</button>
+        <button class="btn btn-success text-white g-recaptcha" type="submit" data-sitekey="{{ env("GCAPTCHA_SITE_KEY") }}" data-callback="sendForm">{{ __('auth.lostPassword.submit') }}</button>
     </form>
 </div>
 @endsection

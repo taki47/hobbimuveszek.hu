@@ -1345,10 +1345,11 @@
     <script src="{{ asset("/assets/js/bootstrap.min.js?ver=".env("APP_VER")) }}"></script>
     <script src="{{ asset("/assets/js/plugins.js?ver=".env("APP_VER")) }}"></script>
     <script src="{{ asset("/assets/js/script.min.js?ver=".env("APP_VER")) }}"></script>
-    <script src="https://www.google.com/recaptcha/api.js?render={{ env("GCAPTCHA_SITE_KEY") }}"></script>
-    <script src="{{ asset("/assets/js/grecaptcha.js?ver=".env("APP_VER")) }}"></script>
     <script src="{{ asset("/assets/js/main.js?ver=".env("APP_VER")) }}"></script>
     <script src="https://kit.fontawesome.com/a00cdb7d90.js"></script>
+    <script type="text/javascript" src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    @yield('script')
 </body>
 
 </html>

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container main-container">
-    <form class="form-signin" id="lostPasswordGenerateForm" method="POST" action="{{ route('sendGenerateNewPassword',[$user->email, $user->confirm]) }}">
+    <form class="form-signin" id="form" method="POST" action="{{ route('sendGenerateNewPassword',[$user->email, $user->confirm]) }}">
         @csrf
         <input type="hidden" name="siteKey" id="siteKey" value="{{ env("GCAPTCHA_SITE_KEY") }}">
 
@@ -23,15 +23,17 @@
 
         <div class="form-group">
             <label for="inputEmail" class="sr-only">{{ __('auth.lostPassword.generate.password') }}</label>
-            <input type="password" name="password" id="inputPassword" class="form-control" placeholder="{{ __('auth.lostPassword.generate.password') }}" required autofocus>
+            <input type="password" name="password" class="form-control" placeholder="{{ __('auth.lostPassword.generate.password') }}" required autofocus>
         </div>
 
         <div class="form-group">
             <label for="inputEmail" class="sr-only">{{ __('auth.lostPassword.generate.passwordRetry') }}</label>
-            <input type="password" name="password_confirmation" id="inputPassword" class="form-control" placeholder="{{ __('auth.lostPassword.generate.passwordRetry') }}" required>
+            <input type="password" name="password_confirmation" class="form-control" placeholder="{{ __('auth.lostPassword.generate.passwordRetry') }}" required>
         </div>
 
-        <button  class="btn btn-success text-white" type="button" id="lostPasswordGenerateButton">{{ __('auth.lostPassword.generate.submit') }}</button>
+        <input type="hidden" name="gRecaptchaResponse" id="gRecaptchaResponse" value="">
+
+        <button class="btn btn-success text-white g-recaptcha" type="submit" data-sitekey="{{ env("GCAPTCHA_SITE_KEY") }}" data-callback="sendForm">{{ __('auth.lostPassword.generate.submit') }}</button>
     </form>
 </div>
 @endsection

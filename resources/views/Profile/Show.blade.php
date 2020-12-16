@@ -47,26 +47,29 @@
                                     </span>
                                     @if ( $user->phone )
                                         <span class="info"><i class="icon-phone"></i>
-                                            <div class="lds-spinner d-none" id="phone-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                                            <a href="javascript:void(0)" id="show_phone_number" class="d-inline-block">
+                                            <div id="phone-spinner" class="d-none"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
+                                            
+                                            <div class="d-inline-block showButtonContainer" id="show_phone_number">
+                                                <button class="g-recaptcha" data-sitekey="{{ env("GCAPTCHA_SITE_KEY") }}" data-callback="getPhoneNumber">
+                                                    {{ __("profile.show") }}
+                                                </button>
+                                            </div>
+                                            
+                                            <!--<a href="javascript:void(0)" id="show_phone_number" class="d-inline-block">
                                                 {{ __("profile.show") }}
-                                            </a>
-                                            <a href="tel:{{ $user->phone }}" id="phone_number" class="d-none">
-                                                {{ $user->phone }}
-                                            </a>
+                                            </a>-->
                                         </span>
                                     @endif
                                     
                                     <span class="info">
                                         <i class="icon-envelope"></i>
                                         
-                                        <div class="lds-spinner d-none" id="email-spinner"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-                                        <a href="javascript:void(0)" id="show_email_address" class="d-inline-block">
-                                            {{ __("profile.show") }}
-                                        </a>
-                                        <a href="javascript:void(0)" id="email_address" class="d-none">
-                                            {{ $user->email }}
-                                        </a>
+                                        <div id="email-spinner" class="d-none"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
+                                        <div class="d-inline-block showButtonContainer" id="show_email_address">
+                                            <button class="g-recaptcha" data-sitekey="{{ env("GCAPTCHA_SITE_KEY") }}" data-callback="getEmailAddress">
+                                                {{ __("profile.show") }}
+                                            </button>
+                                        </div>
                                     </span>
 
                                     @if ( $user->website )
@@ -83,9 +86,20 @@
                                         </span>
                                     @endif
 
-                                    <span class="info"><i class="icon-map-marker"></i>
-                                        {{ $user->getFirstBillingData($user->id)->state->name }}, {{ $user->getFirstBillingData($user->id)->city }}
-                                    </span>
+                                    @if ( $user->province_id || $user->locationCity )
+                                        <span class="info"><i class="icon-map-marker"></i>
+                                            @if ( $user->province_id )
+                                                {{ $user->state->name }},
+                                            @endif
+                                            @if ( $user->locationCity )
+                                                {{ $user->locationCity }}
+                                            @endif
+                                        </span>
+                                    @endif
+
+                                    <br />
+
+                                    {{ $user->description }}
                                 </div>
 
                                 <div class="profile-rating">
@@ -1344,8 +1358,8 @@
 
 
                 </div>
-                <div id="siteKey" class="d-none">{{ env("GCAPTCHA_SITE_KEY") }}</div>
                 <div id="csrf" class="d-none">@csrf</div>
+                <div id="uid" class="d-none">{{ $user->id }}</div>
             </div>
         </div>
     </div>

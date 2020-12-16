@@ -40,8 +40,9 @@ Route::group(['middleware' => 'isOnline'], function () {
     Route::get("/muvesz/{userSlug}","ProfileController@show")->name("showProfile");
 });
 
-//captcha
-Route::post("/checkCaptcha", "PublicController@CheckCaptcha")->name("checkCaptcha");
+/** API */
+Route::any("/getEmail", "ApiController@getEmailAddress")->name("getEmailAddress");
+Route::post("/getPhone", "ApiController@getPhoneNumber")->name("getEmailAddress");
 
 
 Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {

@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="container main-container">
-    <form class="form-signin" id="loginForm" method="POST" action="{{ route('loginAttempt') }}">
+    <form class="form-signin" id="form" method="POST" action="{{ route('loginAttempt') }}">
         @csrf
         <input type="hidden" name="siteKey" id="siteKey" value="{{ env("GCAPTCHA_SITE_KEY") }}">
 
@@ -33,7 +33,9 @@
             </label>
         </div>
 
-        <button  class="btn btn-success text-white" type="button" id="loginButton">{{ __('auth.login.title') }}</button>
+        <input type="hidden" name="gRecaptchaResponse" id="gRecaptchaResponse" value="">
+
+        <button  class="btn btn-success text-white g-recaptcha" type="submit" data-sitekey="{{ env("GCAPTCHA_SITE_KEY") }}" data-callback="sendForm">{{ __('auth.login.title') }}</button>
         <a href="{{ route("lostPassword") }}" class="btn btn-info text-white">{{ __('auth.login.lostPassword') }}</a>
         <a href="{{ route('register') }}" class="btn btn-primary text-white">{{ __('auth.login.register') }}</a>
     </form>

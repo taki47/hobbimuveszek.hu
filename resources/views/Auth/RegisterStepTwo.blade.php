@@ -90,8 +90,22 @@
                     <hr />
 
                     <strong>{{ __('auth.register.stepTwo.otherDataTitle') }}</strong><br />
-                    <small id="otherDataHelp" class="form-text text-muted">{{ __('auth.register.stepTwo.otherDataDescription') }}</small><br />
+                    <small id="otherDataHelp" class="form-text text-muted">{!! __('auth.register.stepTwo.otherDataDescription') !!}</small><br />
                     <div class="form-row">
+                        <div class="col-12 font-weight-bold">{{ __('auth.register.stepTwo.location') }}</div>
+                        <div class="form-group col-12 col-md-6">
+                            <label for="inputPhone">{{ __('auth.register.stepTwo.locationState') }}</label>
+                            <select id="inputLocationState" name="locationState" class="form-control {{ $errors->has("locationState") ? "is-invalid" : "" }}">
+                                <option value="">{{ __('auth.register.stepTwo.locationStateFieldPlaceholder') }}</option>
+                                @foreach ($provinces as $province)
+                                    <option value="{{ $province->id }}" {{ old("locationState") && old("locationState")==$province->id ? "selected" : "" }}>{{ $province->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-md-6">
+                            <label for="inputPhone">{{ __('auth.register.stepTwo.locationCity') }}</label>
+                            <input type="text" class="form-control {{ $errors->has("locationCity") ? "is-invalid" : "" }}" name="locationCity" id="inputLocationCity" placeholder="{{ __('auth.register.stepTwo.locationCityFieldPlaceholder') }}" value="{{ old('locationCity') }}">
+                        </div>
                         <div class="form-group col-12 col-md-4">
                             <label for="inputAvatar">{{ __('auth.register.stepTwo.avatarFieldLabel') }} <small id="avatarHelp" class="form-text text-muted d-inline">{{ __('auth.register.stepTwo.avatarHelp') }}</small></label>
                             <input type="file" class="form-control {{ $errors->has("avatar") ? "is-invalid" : "" }}" name="avatar" id="inputAvatar">
@@ -137,6 +151,20 @@
                     <input type="hidden" name="registerRole" id="registerRoleVisitor" value="{{ old("registerRole") }}">
                     <strong>{{ __('auth.register.stepTwo.otherDataTitle') }}</strong><br /><br />
                     <div class="form-row">
+                        <div class="col-12 font-weight-bold">{{ __('auth.register.stepTwo.location') }}</div>
+                        <div class="form-group col-12 col-md-6">
+                            <label for="inputPhone">{{ __('auth.register.stepTwo.locationState') }}</label>
+                            <select id="inputLocationState" name="locationState" class="form-control {{ $errors->has("locationState") ? "is-invalid" : "" }}">
+                                <option value="">{{ __('auth.register.stepTwo.locationStateFieldPlaceholder') }}</option>
+                                @foreach ($provinces as $province)
+                                    <option value="{{ $province->id }}" {{ old("locationState") && old("locationState")==$province->id ? "selected" : "" }}>{{ $province->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group col-12 col-md-6">
+                            <label for="inputPhone">{{ __('auth.register.stepTwo.locationCity') }}</label>
+                            <input type="text" class="form-control {{ $errors->has("locationCity") ? "is-invalid" : "" }}" name="locationCity" id="inputLocationCity" placeholder="{{ __('auth.register.stepTwo.locationCityFieldPlaceholder') }}" value="{{ old('locationCity') }}">
+                        </div>
                         <div class="form-group col-12 col-md-4">
                             <label for="inputAvatar">{{ __('auth.register.stepTwo.avatarFieldLabel') }} <small id="avatarHelp" class="form-text text-muted d-inline">{{ __('auth.register.stepTwo.avatarHelp') }}</small></label>
                             <input type="file" class="form-control {{ $errors->has("avatar") ? "is-invalid" : "" }}" name="avatar">

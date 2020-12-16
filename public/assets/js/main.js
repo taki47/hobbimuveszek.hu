@@ -29,61 +29,26 @@ $( document ).ready(function() {
         $("#inputCompanyName").attr("required",true);
         $("#inputTaxNumber").attr("required",true);
     });
-
-    $("#show_phone_number").on("click", function() {
-        $("#phone-spinner").removeClass("d-none");
-
-        let siteKey = $("#siteKey").html();
-        let csrf = $("#csrf input").val();
-        grecaptcha.ready(function() {
-            grecaptcha.execute(siteKey, {action: 'showPhoneNumber'}).then(async function(token) {
-                if ( await getCaptchaIsOk(token, csrf) ) {
-                    
-                    $("#show_phone_number").removeClass("d-inline-block");
-                    $("#show_phone_number").addClass("d-none");
-                    $("#phone-spinner").addClass("d-none");
-
-                    $("#phone_number").removeClass("d-none");
-                    $("#phone_number").addClass("d-inline-block");
-                }
-            });
-        });
-    });
-
-    $("#show_email_address").on("click", function() {
-        $("#email-spinner").removeClass("d-none");
-
-        let siteKey = $("#siteKey").html();
-        let csrf = $("#csrf input").val();
-        grecaptcha.ready(function() {
-            grecaptcha.execute(siteKey, {action: 'showEmailAddress'}).then(async function(token) {
-                if ( await getCaptchaIsOk(token, csrf) ) {
-                    
-                    $("#show_email_address").removeClass("d-inline-block");
-                    $("#show_email_address").addClass("d-none");
-                    $("#email-spinner").addClass("d-none");
-
-                    $("#email_address").removeClass("d-none");
-                    $("#email_address").addClass("d-inline-block");
-                }
-            });
-        });
-    });
-
 });
 
-async function getCaptchaIsOk(token, csrf) {
-    let result = await $.ajax('/checkCaptcha', 
+async function getData(mode, token, csrf, id) {
+    let url = "";
+    if ( mode=="phone" )
+        url = "/getPhone";
+    if ( mode=="email" )
+        url = "/getEmail";
+
+    let result = await $.ajax(url, 
     {
         type: 'POST',
         data: {
+            id: id,
             gRecaptchaResponse: token,
             _token: csrf
         },
         success: function (data,status,xhr) {
-            console.log(data);
             if ( data ) {
-                return true;
+                return data;
             } else {
                 return false;
             }
@@ -95,4 +60,51 @@ async function getCaptchaIsOk(token, csrf) {
     });
 
     return result;
+}
+
+async function getEmailAddress(token) {
+    //spinner megjelenítése
+    $("#email-spinner").removeClass("d-none");
+    $("#email-spinner").addClass("d-inline");
+
+    let csrf    = $("#csrf input").val();
+    let id      = $("#uid").html();
+    
+    let response = await getData("email", token, csrf, id);
+    if ( response ) {
+        //spinner eltűntetése
+        $("#email-spinner").removeClass("d-inline");
+        $("#email-spinner").addClass("d-none");
+
+        //e-mail cím megjelenítése
+        $("#show_email_address").html(response);
+    } else {
+        console.log("ERROR");
+    }
+}
+
+async function getPhoneNumber(token) {
+    //spinner megjelenítése
+    $("#phone-spinner").removeClass("d-none");
+    $("#phone-spinner").addClass("d-inline");
+
+    let csrf    = $("#csrf input").val();
+    let id      = $("#uid").html();
+    
+    let response = await getData("phone", token, csrf, id);
+    if ( response ) {
+        //spinner eltűntetése
+        $("#phone-spinner").removeClass("d-inline");
+        $("#phone-spinner").addClass("d-none");
+
+        //telefonszám megjelenítése
+        $("#show_phone_number").html(response);
+    } else {
+        console.log("ERROR");
+    }
+}
+
+function sendForm(token) {
+    $("#gRecaptchaResponse").val(token);
+    $("#form").submit();
 }

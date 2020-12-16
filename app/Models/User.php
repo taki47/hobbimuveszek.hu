@@ -68,8 +68,8 @@ class User extends Authenticatable
         return Cache::has('user-is-online-' . $this->id);
     }
 
-    public function getFirstBillingData($userId)
+    public function state()
     {
-        return User_billing_data::where("user_id", $userId)->first();
+        return $this->belongsTo('App\Models\Province', 'province_id', 'id');
     }
 }

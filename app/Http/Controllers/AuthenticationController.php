@@ -21,6 +21,7 @@ use App\Logging;
 use App\Models\Social_media;
 use App\Models\User_billing_data;
 use App\Models\User_social_media;
+use App\Http\Controllers\ApiController;
 
 class AuthenticationController extends Controller
 {
@@ -46,9 +47,13 @@ class AuthenticationController extends Controller
 
     public function LoginAttempt(Request $request)
     {
-        if ( !\App\Http\Controllers\PublicController::CheckCaptcha($request) ) {
-            return back()->withErrors(['captcha' => 'ReCaptcha Error']);
-        }
+        //captcha ellenőrzése
+        $captcha = ApiController::CheckCaptcha($request->gRecaptchaResponse);
+        if ( !$captcha )
+            return back()
+                ->withErrors(__('auth.register.validation.gRecaptchaResponse'))
+                ->withInput();
+
 
         $credentials = $request->only('email', 'password');
         $credentials["user_status_id"] = "2";
@@ -84,7 +89,8 @@ class AuthenticationController extends Controller
                     'regex:/^\S*(?=\S{6,})(?=\S*[a-z])(?=\S*[A-Z])(?=\S*[\d])\S*$/',
                     'confirmed'
             ],
-            'term'     => 'required'
+            'term'     => 'required',
+            'gRecaptchaResponse' => 'required'
         ];
 
         $messages = [
@@ -97,15 +103,23 @@ class AuthenticationController extends Controller
             'password.regex' => __('auth.register.validation.passwordRegex'),
             'password.confirmed' => __('auth.register.validation.passwordConfirm'),
             'term.required' => __('auth.register.validation.term'),
+            'gRecaptchaResponse.required' => __('auth.register.validation.gRecaptchaResponse')
         ];
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
-        if ($validator->fails()) {
+        if ($validator->fails())
             return back()
                         ->withErrors($validator)
                         ->withInput();
-        }
+        
+        //captcha ellenőrzése
+        $captcha = ApiController::CheckCaptcha($request->gRecaptchaResponse);
+        if ( !$captcha )
+            return back()
+                ->withErrors(__('auth.register.validation.gRecaptchaResponse'))
+                ->withInput();
+
 
         //megerősítő kód előállítása
         $confirmCode = Self::GetConfirmCode();
@@ -260,6 +274,8 @@ class AuthenticationController extends Controller
                 $user->description    = $request->description;
                 $user->avatar         = $avatarAvailable;
                 $user->website        = $request->website;
+                $user->province_id    = $request->locationState;
+                $user->locationCity   = $request->locationCity;
                 $user->confirm        = null;
                 $user->user_status_id = "2";
                 $user->user_role_id   = "3";
@@ -348,6 +364,8 @@ class AuthenticationController extends Controller
                 $user->description    = $request->description;
                 $user->avatar         = $avatarAvailable;
                 $user->website        = $request->website;
+                $user->province_id    = $request->locationState;
+                $user->locationCity   = $request->locationCity;
                 $user->confirm        = null;
                 $user->user_status_id = "2";
                 $user->user_role_id   = "2";
@@ -395,9 +413,12 @@ class AuthenticationController extends Controller
 
     public function SendLostPassword(Request $request)
     {
-        if ( !\App\Http\Controllers\PublicController::CheckCaptcha($request) ) {
-            return back()->withErrors(['captcha' => 'ReCaptcha Error']);
-        }
+        //captcha ellenőrzése
+        $captcha = ApiController::CheckCaptcha($request->gRecaptchaResponse);
+        if ( !$captcha )
+            return back()
+                ->withErrors(__('auth.register.validation.gRecaptchaResponse'))
+                ->withInput();
 
         //létezik ilyen e-mail cím?
         $user = User::where("email", $request->email)->first();
@@ -439,6 +460,13 @@ class AuthenticationController extends Controller
 
     public function SendGenerateNewPassword(Request $request, $email, $confirm)
     {
+        //captcha ellenőrzése
+        $captcha = ApiController::CheckCaptcha($request->gRecaptchaResponse);
+        if ( !$captcha )
+            return back()
+                ->withErrors(__('auth.register.validation.gRecaptchaResponse'))
+                ->withInput();
+                
         $user = User::where("email",$email)->where("confirm", $confirm)->first();
         if ( $user ) {
             //megvan a kód

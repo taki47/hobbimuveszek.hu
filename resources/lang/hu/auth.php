@@ -61,7 +61,12 @@ return [
             'zipFieldLabel' => 'Irányítószám',
             'zipFieldPlaceholder' => 'Irányítószám',
             'otherDataTitle' => 'Egyéb adatok',
-            'otherDataDescription' => 'Add meg az elérhetőségeidet, hogy az érdeklődők könnyen rádtaláljanak',
+            'otherDataDescription' => 'Add meg az elérhetőségeidet, hogy az érdeklődők könnyen rádtaláljanak<br />Amely adatokat itt megadsz, az adatlapodon megjelenik',
+            'location' => 'Tartózkodási helyed',
+            'locationStateFieldPlaceholder' => 'Válassz egyet...',
+            'locationState' => 'Megye',
+            'locationCity' => 'Város',
+            'locationCityFieldPlaceholder' => 'Város',
             'avatarFieldLabel' => 'Avatar',
             'avatarHelp' => 'jpeg,png,jpg,gif. Maximum '.env("UPLOAD_MAX_FILESIZE").' MB',
             'phoneFieldLabel' => 'Telefonszám',
@@ -93,6 +98,7 @@ return [
             'avatarIsImage' => 'Avatarnak csak kép tölthető fel!',
             'avatarMimeType' => 'Avatar kiterjesztése a következő lehet: jpeg,png,jpg,gif',
             'avatarSize' => 'Avatar file mérete nem lehet nagyobb mint '.env("UPLOAD_MAX_FILESIZE").' MB',
+            'gRecaptchaResponse' => 'ReCapctha hiba!'
         ],
         'success' => [
             'title' => 'Köszönjük a regisztrációdat!',
