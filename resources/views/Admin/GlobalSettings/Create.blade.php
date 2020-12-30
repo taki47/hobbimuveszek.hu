@@ -26,8 +26,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="inputValue">{{ __('admin.globalSettings.create.valueFieldLabel') }}</label>
-                        <input type="text" id="inputValue" name="value" class="form-control {{ $errors->has("value") ? "is-invalid" : "" }}" placeholder="{{ __('admin.globalSettings.create.valueFieldPlaceholder') }}" value="{{ old() ? old('value') : '' }}">
+                        <label for="inputType">{{ __('admin.globalSettings.create.typeFieldLabel') }}</label>
+                        <input type="checkbox" id="inputType" name="type" value="2">
                     </div>
             
                     <br /><br />

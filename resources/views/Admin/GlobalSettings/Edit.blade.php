@@ -25,19 +25,28 @@
                         <input type="text" id="inputName" name="name" class="form-control {{ $errors->has("name") ? "is-invalid" : "" }}" placeholder="{{ __('admin.globalSettings.edit.nameFieldPlaceholder') }}" required autofocus value="{{ old() ? old('name') : $globalSetting->name }}">
                     </div>
 
-                    @if ( 
-                        $globalSetting->id=="1" ||
-                        $globalSetting->id=="2" ||
-                        $globalSetting->id=="3" ||
-                        $globalSetting->id=="4" ||
-                        $globalSetting->id=="5" ||
-                        $globalSetting->id=="6"
-                    )
+                    @if ( $globalSetting->type=="2" )
                         <div class="form-group">
-                            <label for="inputValue">{{ __('admin.globalSettings.edit.valueFieldLabel') }}</label>
-                            <input type="file" id="inputValue" name="value" class="form-control {{ $errors->has("value") ? "is-invalid" : "" }}" placeholder="{{ __('admin.globalSettings.edit.valueFieldPlaceholder') }}">
+                            <label for="inputImage">{{ __('admin.globalSettings.edit.imageFieldLabel') }}</label>
+                            <input type="file" id="inputImage" name="value" class="form-control {{ $errors->has("value") ? "is-invalid" : "" }}" placeholder="{{ __('admin.globalSettings.edit.imageFieldPlaceholder') }}">
                             <br />
                             <img src="/assets/images/{{ $globalSetting->value }}" style="max-height:150px;">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputFileName">{{ __('admin.globalSettings.edit.fileNameFieldLabel') }}</label>
+                            <input type="text" id="inputFileName" name="fileName" class="form-control {{ $errors->has("value") ? "is-invalid" : "" }}" placeholder="{{ __('admin.globalSettings.edit.fileNameFieldPlaceholder') }}" value="{{ old() ? old('fileName') : $globalSetting->value }}">
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col">
+                                <label for="inputAlt">{{ __('admin.globalSettings.edit.altFieldLabel') }}</label>
+                                <input type="text" id="inputAlt" name="alt" class="form-control {{ $errors->has("value") ? "is-invalid" : "" }}" placeholder="{{ __('admin.globalSettings.edit.altFieldPlaceholder') }}" value="{{ old() ? old('alt') : $globalSetting->alt }}">
+                            </div>
+                            <div class="col">
+                                <label for="inputtitle">{{ __('admin.globalSettings.edit.titleFieldLabel') }}</label>
+                                <input type="text" id="inputtitle" name="title" class="form-control {{ $errors->has("value") ? "is-invalid" : "" }}" placeholder="{{ __('admin.globalSettings.edit.titleFieldPlaceholder') }}" value="{{ old() ? old('title') : $globalSetting->title }}">
+                            </div>
                         </div>
                     @else
                         <div class="form-group">

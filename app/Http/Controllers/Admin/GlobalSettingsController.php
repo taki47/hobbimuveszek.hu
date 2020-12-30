@@ -67,9 +67,14 @@ class GlobalSettingsController extends Controller
                     ->withErrors($validator)
                     ->withInput();
 
+        $type = "1";
+        if ( $request->type!="" )
+            $type = $request->type;
+        
+        
         $globalSetting = new Global_setting();
         $globalSetting->name = $request->name;
-        $globalSetting->value = $request->value;
+        $globalSetting->type = $type;
         $globalSetting->save();
 
         Log::channel('daily')->info($this->logging->log("GLOBAL_SETTING",$globalSetting->id,"NEW GLOBAL SETTING","SUCCESS"));
@@ -128,14 +133,7 @@ class GlobalSettingsController extends Controller
             $globalSetting->name = $request->name;
         }
 
-        if (
-            $globalSetting->id=="1" ||
-            $globalSetting->id=="2" ||
-            $globalSetting->id=="3" ||
-            $globalSetting->id=="4" ||
-            $globalSetting->id=="5" ||
-            $globalSetting->id=="6"
-        )
+        if ( $globalSetting->type )
         {
             if ( $request->file('value') ) {
                 $image = $request->file('value');
@@ -164,30 +162,7 @@ class GlobalSettingsController extends Controller
                 
                 $imageInfo = pathinfo($image->getClientOriginalName());
                 
-                $imageName = "";
-                switch ($globalSetting->id) {
-                    case '1':
-                        $imageName = "logo.png";
-                        break;
-                    case '2':
-                        $imageName = "logo_hosszu.png";
-                        break;
-                    case '3':
-                        $imageName = "logo_inverz.png";
-                        break;
-                    case '4':
-                        $imageName = "favicon.ico";
-                        break;
-                    case '5':
-                        $imageName = "apple-touch-icon.png";
-                        break;
-                    case '6':
-                        $imageName = "logo-footer.png";
-                        break;
-                    default:
-                        $imageName = "default.png";
-                        break;
-                }
+                $imageName = $request->fileName;
                 
                 $destinationPath = public_path("/assets/images/");
                 
@@ -203,6 +178,8 @@ class GlobalSettingsController extends Controller
                 $log .= "Change value: ".$imageName.", ";
                 $globalSetting->value = $imageName;
             }
+            $globalSetting->alt   = $request->alt;
+            $globalSetting->title = $request->title;
         }
         else
         {

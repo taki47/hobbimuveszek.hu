@@ -139,7 +139,7 @@
                                     <div class="row-align-items-center">
                                         <div class="logo">
                                             <a href="/">
-                                                <img src="/assets/images/{{ $global[0]->value }}" alt="Hobbiművészek" title="Hobbiművészek">
+                                                <img src="/assets/images/{{ $global[0]->value }}" alt="{{ $global[0]->alt }}" title="{{ $global[0]->title }}">
                                             </a>
                                         </div>
                                         <div class="top-search-bar">
@@ -999,7 +999,7 @@
                             </div>
                             <div class="mobile-logo">
                                 <a href="/">
-                                    <img src="/assets/images/{{ $global[1]->value }}" alt="Hobbiművészek" title="Hobbiművészek" class="img-fluid">
+                                    <img src="/assets/images/{{ $global[1]->value }}" alt="{{ $global[1]->alt }}" title="{{ $global[1]->title }}" class="img-fluid">
                                 </a>
                             </div>
                             <div class="mobile-search">
@@ -1225,7 +1225,7 @@
                                 <div class="row-custom">
                                     <div class="footer-logo">
                                         <a href="/">
-                                            <img src="/assets/images/{{ $global[5]->value }}" alt="Amatőrművészek" title="Amatőrművészek">
+                                            <img src="/assets/images/{{ $global[5]->value }}" alt="{{ $global[5]->alt }}" title="{{ $global[5]->title }}">
                                         </a>
                                     </div>
                                 </div>

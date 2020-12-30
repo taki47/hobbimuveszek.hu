@@ -235,6 +235,12 @@ return [
             "nameFieldPlaceholder" => "Név",
             "valueFieldLabel" => "Érték",
             "valueFieldPlaceholder" => "Érték",
+            "fileNameFieldLabel" => "Fájlnév",
+            "fileNameFieldPlaceholder" => "Pl. logo.png, logo-hosszu.png, favicon.ico",
+            "altFieldLabel" => "Alt text",
+            "altFieldPlaceholder" => "Alt text",
+            "titleFieldLabel" => "Title text",
+            "titleFieldPlaceholder" => "Title text",
             "submitButton" => "Módosítás",
             "success" => "A globális beállítás módosítása sikerült"
         ],
@@ -242,8 +248,7 @@ return [
             "title" => "Új globális beállítás felvétele",
             "nameFieldLabel" => "Név",
             "nameFieldPlaceholder" => "Név",
-            "valueFieldLabel" => "Érték",
-            "valueFieldPlaceholder" => "Érték",
+            "typeFieldLabel" => "Kép?",
             "submitButton" => "Létrehozás",
             "success" => "Az új globális beállítás létrehozása sikerült"
         ],
