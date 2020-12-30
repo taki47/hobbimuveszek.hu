@@ -9,6 +9,12 @@ return [
     "dropdown" => [
         "profile" => "Profil"
     ],
+    "menu" => [
+        "usersTitle" => "Felhasználók",
+        "usersMenu" => "Regisztrált felhasználók",
+        "userRolesMenu" => "Jogosultságok",
+        "userStatusesMenu" => "Státuszok"
+    ],
     "users" => [
         "title" => "Regisztrált felhasználók",
         "searchTitle" => "Keresés",
@@ -87,5 +93,80 @@ return [
             "avatarMimeType" => "A feltöltött avatar kiterjesztése a következőek lehetnek: jpeg, jpg, png, gif"
         ],
         "success" => "A felhasználó módosítása sikerült!",
+    ],
+    "userRoles" => [
+        "title" => "Felhasználó jogosultságok",
+        "newRole" => "Új jogosultság felvétele",
+        "table" => [
+            "id" => "ID",
+            "name" => "Név"
+        ],
+        "edit" => [
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Módosítás",
+            "success" => "A jogosultság módosítása sikerült"
+        ],
+        "create" => [
+            "title" => "Új jogosultság felvétele",
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Létrehozás",
+            "success" => "Az új jogosultság létrehozása sikerült"
+        ],
+        "validation" => [
+            "name" => "Név",
+            "nameUnique" => "A megadott jogosultság név már létezik!"
+        ]
+        ],
+        "userRoles" => [
+        "title" => "Felhasználó jogosultságok",
+        "newRole" => "Új jogosultság felvétele",
+        "table" => [
+            "id" => "ID",
+            "name" => "Név"
+        ],
+        "edit" => [
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Módosítás",
+            "success" => "A jogosultság módosítása sikerült"
+        ],
+        "create" => [
+            "title" => "Új jogosultság felvétele",
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Létrehozás",
+            "success" => "Az új jogosultság létrehozása sikerült"
+        ],
+        "validation" => [
+            "name" => "Név",
+            "nameUnique" => "A megadott jogosultság név már létezik!"
+        ]
+    ],
+    "userStatuses" => [
+        "title" => "Felhasználó státuszok",
+        "newRole" => "Új státusz felvétele",
+        "table" => [
+            "id" => "ID",
+            "name" => "Név"
+        ],
+        "edit" => [
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Módosítás",
+            "success" => "A státusz módosítása sikerült"
+        ],
+        "create" => [
+            "title" => "Új státusz felvétele",
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Létrehozás",
+            "success" => "Az új státusz létrehozása sikerült"
+        ],
+        "validation" => [
+            "name" => "Név",
+            "nameUnique" => "A megadott státusz név már létezik!"
+        ]
     ]
 ];

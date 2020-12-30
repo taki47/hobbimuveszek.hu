@@ -54,4 +54,18 @@ Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
     Route::get("/user/edit/{id}","Admin\UserController@edit")->name("adminUserEdit");
     Route::post("/user/edit/{id}","Admin\UserController@update")->name("adminUserUpdate");
     Route::get("/user/avatar/delete/{id}","Admin\UserController@deleteAvatar")->name("deleteAvatar");
+
+    /** USERROLES */
+    Route::get("/users/roles", "Admin\UserRolesController@index")->name("adminUserRoles");
+    Route::get("/users/role/edit/{id}", "Admin\UserRolesController@edit")->name("adminUserRoleEdit");
+    Route::post("/users/role/edit/{id}", "Admin\UserRolesController@update")->name("adminUserRoleUpdate");
+    Route::get("/users/role/new", "Admin\UserRolesController@create")->name("adminUserRoleCreate");
+    Route::post("/users/role/new", "Admin\UserRolesController@store")->name("adminUserRoleStore");
+
+    /** USERSTATUSES */
+    Route::get("/users/statuses", "Admin\UserStatusesController@index")->name("adminUserStatuses");
+    Route::get("/users/status/edit/{id}", "Admin\UserStatusesController@edit")->name("adminUserStatusEdit");
+    Route::post("/users/status/edit/{id}", "Admin\UserStatusesController@update")->name("adminUserStatusUpdate");
+    Route::get("/users/status/new", "Admin\UserStatusesController@create")->name("adminUserStatusCreate");
+    Route::post("/users/status/new", "Admin\UserStatusesController@store")->name("adminUserStatusStore");
 });
