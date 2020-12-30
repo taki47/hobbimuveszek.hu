@@ -22,5 +22,5 @@
 
 #Authtype Basic
 #AuthName "Put whatever you want here"
-#AuthUserFile /var/www/takiwebneked/data/www/gallery.takiwebneked.hu/public/.htpasswd
+#AuthUserFile /var/www/takiwebneked/data/www/teszt.hobbimuveszek.hu/public/.htpasswd
 #Require valid-user

@@ -72,4 +72,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Models\Province', 'province_id', 'id');
     }
+
+    public function billing()
+    {
+        return $this->belongsTo('App\Models\User_billing_data', "id", "user_id");
+    }
 }

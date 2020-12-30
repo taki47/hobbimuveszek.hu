@@ -22,6 +22,10 @@ class IsOnline
         if(Auth::check()) {
             $expiresAt = Carbon::now()->addMinutes(5);
             Cache::put('user-is-online-' . Auth::user()->id, true, $expiresAt);
+
+            //ha nem aktív (zárolt), kiléptetem
+            if ( Auth::user()->user_status_id!="2" )
+                Auth::logout();
         }
 
         return $next($request);

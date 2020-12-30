@@ -201,12 +201,9 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="javascript:;">
-                                        <span class="badge bg-red pull-right">50%</span>
-                                        <span>{{ __('admin.dropdown.profile') }}</span>
-                                    </a>
                                     <a class="dropdown-item" href="{{ route("logout") }}">
-                                        <i class="fa fa-sign-out pull-right"></i> {{ __('admin.logout') }}</a>
+                                        <i class="fa fa-sign-out pull-right"></i> {{ __('admin.logout') }}
+                                    </a>
                                 </div>
                             </li>
 
@@ -345,6 +342,8 @@
 
     <!-- Custom Theme Scripts -->
     <script src="/admin/assets/js/custom.min.js"></script>
+
+    @yield("scripts")
 
 </body>
 

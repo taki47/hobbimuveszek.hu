@@ -50,6 +50,8 @@ Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
 
     /** USERS */
     Route::get("/users","Admin\UserController@index")->name("adminUsers");
-    Route::get("/user/{id}","Admin\UserController@edit")->name("adminUserEdit");
-    Route::post("/user/{id}","Admin\UserController@update")->name("adminUserUpdate");
+    Route::any("/users/search", "Admin\UserController@search")->name("adminUserSearch");
+    Route::get("/user/edit/{id}","Admin\UserController@edit")->name("adminUserEdit");
+    Route::post("/user/edit/{id}","Admin\UserController@update")->name("adminUserUpdate");
+    Route::get("/user/avatar/delete/{id}","Admin\UserController@deleteAvatar")->name("deleteAvatar");
 });
