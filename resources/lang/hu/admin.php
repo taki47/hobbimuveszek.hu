@@ -13,7 +13,10 @@ return [
         "usersTitle" => "Felhasználók",
         "usersMenu" => "Regisztrált felhasználók",
         "userRolesMenu" => "Jogosultságok",
-        "userStatusesMenu" => "Státuszok"
+        "userStatusesMenu" => "Státuszok",
+        "masterDataTitle" => "Törzsadatok",
+        "provincesMenu" => "Megyék",
+        "billingTypesMenu" => "Számlázási típusok"
     ],
     "users" => [
         "title" => "Regisztrált felhasználók",
@@ -167,6 +170,56 @@ return [
         "validation" => [
             "name" => "Név",
             "nameUnique" => "A megadott státusz név már létezik!"
+        ]
+    ],
+    "provinces" => [
+        "title" => "Megyék",
+        "newProvince" => "Új megye felvétele",
+        "table" => [
+            "id" => "ID",
+            "name" => "Név"
+        ],
+        "edit" => [
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Módosítás",
+            "success" => "A megye módosítása sikerült"
+        ],
+        "create" => [
+            "title" => "Új megye felvétele",
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Létrehozás",
+            "success" => "Az új megye létrehozása sikerült"
+        ],
+        "validation" => [
+            "name" => "Név",
+            "nameUnique" => "A megadott megye név már létezik!"
+        ]
+    ],
+    "billingTypes" => [
+        "title" => "Számlázási típusok",
+        "newBillingType" => "Új számlázási típus felvétele",
+        "table" => [
+            "id" => "ID",
+            "name" => "Név"
+        ],
+        "edit" => [
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Módosítás",
+            "success" => "A számlázási típus módosítása sikerült"
+        ],
+        "create" => [
+            "title" => "Új számlázási típus felvétele",
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "submitButton" => "Létrehozás",
+            "success" => "Az új számlázási típus létrehozása sikerült"
+        ],
+        "validation" => [
+            "name" => "Név",
+            "nameUnique" => "A megadott számlázási típus név már létezik!"
         ]
     ]
 ];

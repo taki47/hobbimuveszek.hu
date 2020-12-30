@@ -68,4 +68,18 @@ Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
     Route::post("/users/status/edit/{id}", "Admin\UserStatusesController@update")->name("adminUserStatusUpdate");
     Route::get("/users/status/new", "Admin\UserStatusesController@create")->name("adminUserStatusCreate");
     Route::post("/users/status/new", "Admin\UserStatusesController@store")->name("adminUserStatusStore");
+
+    /** PROVINCES */
+    Route::get("/provinces", "Admin\ProvincesController@index")->name("adminProvinces");
+    Route::get("/province/edit/{id}", "Admin\ProvincesController@edit")->name("adminProvinceEdit");
+    Route::post("/province/edit/{id}", "Admin\ProvincesController@update")->name("adminProvinceUpdate");
+    Route::get("/province/new", "Admin\ProvincesController@create")->name("adminProvinceCreate");
+    Route::post("/province/new", "Admin\ProvincesController@store")->name("adminProvinceStore");
+
+    /** BILLINGTYPES */
+    Route::get("/billingTypes", "Admin\BillingTypesController@index")->name("adminBillingTypes");
+    Route::get("/billingTypes/edit/{id}", "Admin\BillingTypesController@edit")->name("adminBillingTypeEdit");
+    Route::post("/billingTypes/edit/{id}", "Admin\BillingTypesController@update")->name("adminBillingTypeUpdate");
+    Route::get("/billingTypes/new", "Admin\BillingTypesController@create")->name("adminBillingTypeCreate");
+    Route::post("/billingTypes/new", "Admin\BillingTypesController@store")->name("adminBillingTypeStore");
 });
