@@ -7,7 +7,7 @@
     <title>{{ env("APP_NAME") }} | Üdvözöljük!</title>
     <meta name="description" content="Gallery page" />
     <meta name="keywords" content="index, home" />
-    <link rel="shortcut icon" href="{{ asset("/assets/images/favicon.ico") }}" type="image/vnd.microsoft.icon" />
+    <link rel="shortcut icon" href="{{ asset("/assets/images/".$global[3]->value) }}" type="image/vnd.microsoft.icon" />
     <link rel="canonical" href="{{ env("APP_URL") }}" />
     <link rel="shortlink" href="{{ env("APP_URL") }}" />
     <link rel="apple-touch-icon" href="{{ asset("/assets/images/apple-touch-icon.png") }}" type="image/png" />
@@ -139,7 +139,7 @@
                                     <div class="row-align-items-center">
                                         <div class="logo">
                                             <a href="/">
-                                                <img src="/assets/images/logo.jpg" alt="Hobbiművészek" title="Hobbiművészek">
+                                                <img src="/assets/images/{{ $global[0]->value }}" alt="Hobbiművészek" title="Hobbiművészek">
                                             </a>
                                         </div>
                                         <div class="top-search-bar">
@@ -999,7 +999,8 @@
                             </div>
                             <div class="mobile-logo">
                                 <a href="/">
-                                    <img src="/assets/images/logo.jpg" alt="Hobbiművészek" class="Hobbiművészek"></a>
+                                    <img src="/assets/images/{{ $global[1]->value }}" alt="Hobbiművészek" title="Hobbiművészek" class="img-fluid">
+                                </a>
                             </div>
                             <div class="mobile-search">
                                 <a class="search-icon"><i class="icon-search"></i></a>
@@ -1224,7 +1225,7 @@
                                 <div class="row-custom">
                                     <div class="footer-logo">
                                         <a href="/">
-                                            <img src="/assets/images/logo.jpg" alt="Amatőrművészek" title="Amatőrművészek">
+                                            <img src="/assets/images/{{ $global[5]->value }}" alt="Amatőrművészek" title="Amatőrművészek">
                                         </a>
                                     </div>
                                 </div>

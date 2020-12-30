@@ -82,4 +82,13 @@ Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
     Route::post("/billingTypes/edit/{id}", "Admin\BillingTypesController@update")->name("adminBillingTypeUpdate");
     Route::get("/billingTypes/new", "Admin\BillingTypesController@create")->name("adminBillingTypeCreate");
     Route::post("/billingTypes/new", "Admin\BillingTypesController@store")->name("adminBillingTypeStore");
+
+    /**
+     * GLOBAL SETTINGS
+     */
+    Route::get("/globalSettings", "Admin\GlobalSettingsController@index")->name("adminGlobalSettings");
+    Route::get("/globalSetting/edit/{id}", "Admin\GlobalSettingsController@edit")->name("adminGlobalSettingEdit");
+    Route::post("/globalSetting/edit/{id}", "Admin\GlobalSettingsController@update")->name("adminGlobalSettingUpdate");
+    Route::get("/globalSetting/new", "Admin\GlobalSettingsController@create")->name("adminGlobalSettingCreate");
+    Route::post("/globalSetting/new", "Admin\GlobalSettingsController@store")->name("adminGlobalSettingStore");
 });

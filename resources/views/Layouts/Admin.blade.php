@@ -10,7 +10,7 @@
     <link rel="icon" href="images/favicon.ico" type="image/ico" />
 
     <title>{{ env("APP_NAME") }} | {{ __('admin.title') }}</title>
-    <link rel="shortcut icon" href="{{ asset("/assets/images/favicon.ico") }}" type="image/vnd.microsoft.icon" />
+    <link rel="shortcut icon" href="{{ asset("/assets/images/".$global[4]->value) }}" type="image/vnd.microsoft.icon" />
 
     <!-- Bootstrap -->
     <link href="/admin/assets/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -40,7 +40,7 @@
                 <div class="left_col scroll-view">
                     <div class="navbar nav_title" style="border: 0;">
                         <a href="index.html" class="site_title">
-                            <img src="/assets/images/logo.jpg" class="img-fluid" style="max-height:50px;">
+                            <img src="/assets/images/{{ $global[2]->value }}" class="img-fluid" style="max-height:50px;">
                             <span>{{ env("APP_NAME") }}</span>
                         </a>
                     </div>
@@ -91,6 +91,9 @@
                                 </li>
                                 <li>
                                     <a href="{{ route("adminBillingTypes") }}"><i class="fas fa-building"></i> {{ __('admin.menu.billingTypesMenu') }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route("adminGlobalSettings") }}"><i class="fas fa-cogs"></i> {{ __('admin.menu.globalSettingsMenu') }}</a>
                                 </li>
                             </ul>
                         </div>

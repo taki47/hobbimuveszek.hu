@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Jenssegers\Date\Date;
 
+use App\Models\Global_setting;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,5 +28,9 @@ class AppServiceProvider extends ServiceProvider
     {
         date_default_timezone_set(env("TIMEZONE"));
         Date::setLocale(env("TIMEZONE_LOCALE"));
+
+        view()->composer('*', function($view) {
+            $view->with('global', Global_setting::all());
+        });
     }
 }

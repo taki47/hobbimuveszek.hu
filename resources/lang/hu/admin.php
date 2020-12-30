@@ -16,7 +16,8 @@ return [
         "userStatusesMenu" => "Státuszok",
         "masterDataTitle" => "Törzsadatok",
         "provincesMenu" => "Megyék",
-        "billingTypesMenu" => "Számlázási típusok"
+        "billingTypesMenu" => "Számlázási típusok",
+        "globalSettingsMenu" => "Globális beállítások"
     ],
     "users" => [
         "title" => "Regisztrált felhasználók",
@@ -221,5 +222,37 @@ return [
             "name" => "Név",
             "nameUnique" => "A megadott számlázási típus név már létezik!"
         ]
-    ]
+    ],
+    "globalSettings" => [
+        "title" => "Globális beállítások",
+        "newGlobalSetting" => "Új globális beállítás felvétele",
+        "table" => [
+            "id" => "ID",
+            "name" => "Név"
+        ],
+        "edit" => [
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "valueFieldLabel" => "Érték",
+            "valueFieldPlaceholder" => "Érték",
+            "submitButton" => "Módosítás",
+            "success" => "A globális beállítás módosítása sikerült"
+        ],
+        "create" => [
+            "title" => "Új globális beállítás felvétele",
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "valueFieldLabel" => "Érték",
+            "valueFieldPlaceholder" => "Érték",
+            "submitButton" => "Létrehozás",
+            "success" => "Az új globális beállítás létrehozása sikerült"
+        ],
+        "validation" => [
+            "name" => "Név",
+            "nameUnique" => "A megadott globális beállítás neve már létezik!",
+            "imageSize" => "A feltöltőtt fájl mérete nem lehet nagyobb mint ".env("UPLOAD_MAX_FILESIZE")." MB",
+            "isImage" => "A feltöltött fájl csak kép lehet!",
+            "mimeType" => "A feltöltött fájl kiterjesztése a következőek lehetnek: jpeg, jpg, png, gif"
+        ]
+    ],
 ];
