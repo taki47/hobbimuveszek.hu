@@ -51,7 +51,7 @@
                     @else
                         <div class="form-group">
                             <label for="inputValue">{{ __('admin.globalSettings.edit.valueFieldLabel') }}</label>
-                            <input type="text" id="inputValue" name="value" class="form-control {{ $errors->has("value") ? "is-invalid" : "" }}" value="{{ old() ? old('value') : $globalSetting->value }}">
+                            <textarea name="value" id="inputValue" class="form-control" rows="5">{{ old() ? old('value') : $globalSetting->value }}</textarea>
                         </div>
                     @endif
             

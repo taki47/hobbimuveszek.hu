@@ -44,6 +44,12 @@ Route::group(['middleware' => 'isOnline'], function () {
 Route::any("/getEmail", "ApiController@getEmailAddress")->name("getEmailAddress");
 Route::post("/getPhone", "ApiController@getPhoneNumber")->name("getEmailAddress");
 
+/** CONTACT FORM */
+Route::post('/kapcsolat/kuldes', "PublicController@sendContactForm")->name("sendContactForm");
+
+/** MORE PAGES */
+Route::any("/{slug}", "PublicController@showPage");
+
 
 Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
     Route::get("/dashboard","Admin\AdminController@Dashboard")->name("adminDashboard");
@@ -91,4 +97,13 @@ Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
     Route::post("/globalSetting/edit/{id}", "Admin\GlobalSettingsController@update")->name("adminGlobalSettingUpdate");
     Route::get("/globalSetting/new", "Admin\GlobalSettingsController@create")->name("adminGlobalSettingCreate");
     Route::post("/globalSetting/new", "Admin\GlobalSettingsController@store")->name("adminGlobalSettingStore");
+
+    /**
+     * PAGES
+     */
+    Route::get("/pages", "Admin\PageController@index")->name("adminPages");
+    Route::get("/page/edit/{id}", "Admin\PageController@edit")->name("adminPageEdit");
+    Route::post("/page/edit/{id}", "Admin\PageController@update")->name("adminPageUpdate");
+    Route::get("/page/new", "Admin\PageController@create")->name("adminPageCreate");
+    Route::post("/page/new", "Admin\PageController@store")->name("adminPageStore");
 });

@@ -133,7 +133,7 @@ class GlobalSettingsController extends Controller
             $globalSetting->name = $request->name;
         }
 
-        if ( $globalSetting->type )
+        if ( $globalSetting->type=="2" )
         {
             if ( $request->file('value') ) {
                 $image = $request->file('value');

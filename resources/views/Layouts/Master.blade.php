@@ -4,12 +4,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>{{ env("APP_NAME") }} | Üdvözöljük!</title>
-    <meta name="description" content="Gallery page" />
-    <meta name="keywords" content="index, home" />
+    <title>{{ env("APP_NAME") }} | {{ isset($page) ? $page->title : "" }}</title>
+    <meta name="description" content="{{ isset($page) ? $page->description : "" }}" />
+    <meta name="keywords" content="{{ isset($page) ? $page->keywords : "" }}" />
     <link rel="shortcut icon" href="{{ asset("/assets/images/".$global[3]->value) }}" type="image/vnd.microsoft.icon" />
     <link rel="canonical" href="{{ env("APP_URL") }}" />
-    <link rel="shortlink" href="{{ env("APP_URL") }}" />
     <link rel="apple-touch-icon" href="{{ asset("/assets/images/apple-touch-icon.png") }}" type="image/png" />
     <link rel="apple-touch-icon-precomposed" href="{{ asset("/assets/images/apple-touch-icon.png") }}" type="image/png" />
     <link rel="stylesheet" href="{{ asset("/assets/css/mds-icons.min.css?ver=".env("APP_VER")) }}" />
@@ -34,9 +33,9 @@
                 <div class="row">
                     <div class="col-6 col-left">
                         <ul class="navbar-nav">
-                            <li class="nav-item"><a href="#" class="nav-link">Rólunk</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link">Kapcsolat</a></li>
-                            <li class="nav-item"><a href="#" class="nav-link">Blog</a></li>
+                            <li class="nav-item"><a href="/rolunk" class="nav-link">Rólunk</a></li>
+                            <li class="nav-item"><a href="/kapcsolat" class="nav-link">Kapcsolat</a></li>
+                            <li class="nav-item"><a href="/blog" class="nav-link">Blog</a></li>
                         </ul>
                     </div>
                     <div class="col-6 col-right">
@@ -1231,7 +1230,7 @@
                                 </div>
                                 <div class="row-custom">
                                     <div class="footer-about">
-                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris ullamcorper facilisis elit sed malesuada. Nullam varius arcu mauris. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Pellentesque cursus placerat arcu, vel faucibus nisl suscipit vel. Ut lorem massa, sodales non maximus ac, congue sed felis.
+                                        {{ $global[6]->value }}
                                     </div>
                                 </div>
                             </div>
@@ -1242,10 +1241,10 @@
                                     </div>
                                     <div class="row-custom">
                                         <ul>
-                                            <li><a href="#">Főoldal</a></li>
-                                            <li><a href="#">Blog</a></li>
-                                            <li><a href="#">Kapcsolat</a></li>
-                                            <li><a href="#">Rólunk</a></li>
+                                            <li><a href="/">Főoldal</a></li>
+                                            <li><a href="/blog">Blog</a></li>
+                                            <li><a href="/kapcsolat">Kapcsolat</a></li>
+                                            <li><a href="/rolunk">Rólunk</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -1257,8 +1256,8 @@
                                     </div>
                                     <div class="row-custom">
                                         <ul>
-                                            <li><a href="#">Felhasználási feltételek</a></li>
-                                            <li><a href="#">Adatkezelési tájékoztató</a>
+                                            <li><a href="/felhasznalasi-feltetelek">Felhasználási feltételek</a></li>
+                                            <li><a href="/adatkezelesi-tajekoztato">Adatkezelési tájékoztató</a>
                                             </li>
 
                                         </ul>
@@ -1274,22 +1273,22 @@
 
                                             <ul>
                                                 <li>
-                                                  <a href="https://www.facebook.com/" class="facebook">
+                                                    <a href="{{ $global[8]->value }}" class="facebook">
                                                       <i class="icon-facebook"></i>
-                                                  </a>
+                                                    </a>
                                                 </li>
                                                 <li>
-                                                    <a href="https://twitter.com" class="twitter">
+                                                    <a href="{{ $global[9]->value }}" class="twitter">
                                                         <i class="icon-twitter"></i>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="https://www.instagram.com" class="instagram">
+                                                    <a href="{{ $global[10]->value }}" class="instagram">
                                                         <i class="icon-instagram"></i>
                                                     </a>
                                                 </li>
                                                 <li>
-                                                    <a href="https://www.pinterest.com/" class="pinterest">
+                                                    <a href="{{ $global[11]->value }}" class="pinterest">
                                                         <i class="icon-pinterest"></i>
                                                     </a>
                                                 </li>
@@ -1330,7 +1329,7 @@
                 <div class="footer-bottom">
                     <div class="container">
                         <div class="copyright">
-                            Copyright 2020 Hobbiművészek.hu - Minden jog fenntartva.
+                            {{ $global[7]->value }}
                         </div>
                     </div>
                 </div>

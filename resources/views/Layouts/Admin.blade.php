@@ -87,6 +87,9 @@
                             <h3>{{ __('admin.menu.masterDataTitle') }}</h3>
                             <ul class="nav side-menu">
                                 <li>
+                                    <a href="{{ route("adminPages") }}"><i class="fas fa-file"></i> {{ __('admin.menu.pagesMenu') }}</a>
+                                </li>
+                                <li>
                                     <a href="{{ route("adminProvinces") }}"><i class="fas fa-globe-europe"></i> {{ __('admin.menu.provincesMenu') }}</a>
                                 </li>
                                 <li>

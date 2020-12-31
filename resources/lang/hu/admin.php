@@ -15,6 +15,7 @@ return [
         "userRolesMenu" => "Jogosultságok",
         "userStatusesMenu" => "Státuszok",
         "masterDataTitle" => "Törzsadatok",
+        "pagesMenu" => "Oldalak kezelése",
         "provincesMenu" => "Megyék",
         "billingTypesMenu" => "Számlázási típusok",
         "globalSettingsMenu" => "Globális beállítások"
@@ -119,7 +120,7 @@ return [
             "success" => "Az új jogosultság létrehozása sikerült"
         ],
         "validation" => [
-            "name" => "Név",
+            "name" => "Név megadása kötelező",
             "nameUnique" => "A megadott jogosultság név már létezik!"
         ]
         ],
@@ -144,7 +145,7 @@ return [
             "success" => "Az új jogosultság létrehozása sikerült"
         ],
         "validation" => [
-            "name" => "Név",
+            "name" => "Név megadása kötelező",
             "nameUnique" => "A megadott jogosultság név már létezik!"
         ]
     ],
@@ -169,7 +170,7 @@ return [
             "success" => "Az új státusz létrehozása sikerült"
         ],
         "validation" => [
-            "name" => "Név",
+            "name" => "Név megadása kötelező",
             "nameUnique" => "A megadott státusz név már létezik!"
         ]
     ],
@@ -194,7 +195,7 @@ return [
             "success" => "Az új megye létrehozása sikerült"
         ],
         "validation" => [
-            "name" => "Név",
+            "name" => "Név megadása kötelező",
             "nameUnique" => "A megadott megye név már létezik!"
         ]
     ],
@@ -219,7 +220,7 @@ return [
             "success" => "Az új számlázási típus létrehozása sikerült"
         ],
         "validation" => [
-            "name" => "Név",
+            "name" => "Név megadása kötelező!",
             "nameUnique" => "A megadott számlázási típus név már létezik!"
         ]
     ],
@@ -253,11 +254,52 @@ return [
             "success" => "Az új globális beállítás létrehozása sikerült"
         ],
         "validation" => [
-            "name" => "Név",
+            "name" => "Név megadása kötelező!",
             "nameUnique" => "A megadott globális beállítás neve már létezik!",
             "imageSize" => "A feltöltőtt fájl mérete nem lehet nagyobb mint ".env("UPLOAD_MAX_FILESIZE")." MB",
             "isImage" => "A feltöltött fájl csak kép lehet!",
             "mimeType" => "A feltöltött fájl kiterjesztése a következőek lehetnek: jpeg, jpg, png, gif"
+        ]
+    ],
+    "pages" => [
+        "title" => "Oldalak",
+        "newPage" => "Új oldal felvétele",
+        "table" => [
+            "id" => "ID",
+            "name" => "Név"
+        ],
+        "edit" => [
+            "title" => "Új oldal felvétele",
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "titleFieldLabel" => "Title",
+            "titleFieldPlaceholder" => "Title",
+            "descriptionFieldLabel" => "Meta description",
+            "descriptionFieldPlaceholder" => "Meta description",
+            "keywordsFieldLabel" => "Meta keywords",
+            "keywordsFieldPlaceholder" => "Meta keywords",
+            "bodyFieldLabel" => "Törzs",
+            "submitButton" => "Módosítás",
+            "success" => "Az oldal módosítása sikerült"
+        ],
+        "create" => [
+            "title" => "Új oldal felvétele",
+            "nameFieldLabel" => "Név",
+            "nameFieldPlaceholder" => "Név",
+            "titleFieldLabel" => "Title",
+            "titleFieldPlaceholder" => "Title",
+            "descriptionFieldLabel" => "Meta description",
+            "descriptionFieldPlaceholder" => "Meta description",
+            "keywordsFieldLabel" => "Meta keywords",
+            "keywordsFieldPlaceholder" => "Meta keywords",
+            "bodyFieldLabel" => "Törzs",
+            "submitButton" => "Létrehozás",
+            "success" => "Az új oldal létrehozása sikerült"
+        ],
+        "validation" => [
+            "name" => "Név megadása kötelező",
+            "nameUnique" => "A megadott oldalnév már létezik!",
+            "title" => "Title megadása kötelező"
         ]
     ],
 ];
