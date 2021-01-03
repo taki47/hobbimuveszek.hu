@@ -13,97 +13,106 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::group(['middleware' => 'isOnline'], function () {
-    Route::get('/', "PublicController@Home")->name("home");
-
-    /**
-     * REGISTRATION / AUTHENTICATION
-     */
-    Route::get("/bejelentkezes", "AuthenticationController@Login")->name("login");
-    Route::post("/bejelentkezes", "AuthenticationController@LoginAttempt")->name("loginAttempt");
-
-    Route::get("/regisztracio/megerosites/{Email}/{confirmCode}", "AuthenticationController@RegisterStepTwo")->name("registerStepTwo");
-    Route::post("/regisztracio/megerosites/{Email}/{confirmCode}", "AuthenticationController@SendRegisterStepTwo")->name("sendRegisterStepTwo");
-    Route::get("/regisztracio/sikerult", "AuthenticationController@RegisterStepTwoSuccess")->name("registerStepTwoSuccess");
-    Route::get("/regisztracio", "AuthenticationController@Register")->name("register");
-    Route::get("/regisztracio-sikeres", "AuthenticationController@RegisterSuccess")->name("registerSuccess");
-    Route::post("/regisztracio", "AuthenticationController@SendRegister")->name("sendRegister");
-
-    Route::get("/elfelejtett-jelszo/uj-jelszo/{email}/{confirmCode}", "AuthenticationController@GenerateNewPassword")->name("generateNewPassword");
-    Route::post("/elfelejtett-jelszo/uj-jelszo/{email}/{confirmCode}", "AuthenticationController@SendGenerateNewPassword")->name("sendGenerateNewPassword");
-    Route::get("/elfelejtett-jelszo", "AuthenticationController@LostPassword")->name("lostPassword");
-    Route::post("/elfelejtett-jelszo", "AuthenticationController@SendLostPassword")->name("sendLostPassword");
-
-    Route::get("/kijelentkezes", "AuthenticationController@Logout")->name("logout");
-
-    /** PROFILES */
-    Route::get("/muvesz/{userSlug}","ProfileController@show")->name("showProfile");
-});
-
-/** API */
-Route::any("/getEmail", "ApiController@getEmailAddress")->name("getEmailAddress");
-Route::post("/getPhone", "ApiController@getPhoneNumber")->name("getEmailAddress");
-
-/** CONTACT FORM */
-Route::post('/kapcsolat/kuldes', "PublicController@sendContactForm")->name("sendContactForm");
-
-/** MORE PAGES */
-Route::any("/{slug}", "PublicController@showPage");
+/** SETLOCALE */
+Route::get("setlocale/{locale}", function ($lang) {
+    \Session::put("locale", $lang);
+    return redirect()->back();
+})->name("setlocale");
 
 
-Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
-    Route::get("/dashboard","Admin\AdminController@Dashboard")->name("adminDashboard");
+Route::group(['middleware'=>'language'],function () {
+    Route::group(['middleware' => 'isOnline'], function () {
+        Route::get('/', "PublicController@Home")->name("home");
 
-    /** USERS */
-    Route::get("/users","Admin\UserController@index")->name("adminUsers");
-    Route::any("/users/search", "Admin\UserController@search")->name("adminUserSearch");
-    Route::get("/user/edit/{id}","Admin\UserController@edit")->name("adminUserEdit");
-    Route::post("/user/edit/{id}","Admin\UserController@update")->name("adminUserUpdate");
-    Route::get("/user/avatar/delete/{id}","Admin\UserController@deleteAvatar")->name("deleteAvatar");
+        /**
+         * REGISTRATION / AUTHENTICATION
+         */
+        Route::get("/bejelentkezes", "AuthenticationController@Login")->name("login");
+        Route::post("/bejelentkezes", "AuthenticationController@LoginAttempt")->name("loginAttempt");
 
-    /** USERROLES */
-    Route::get("/users/roles", "Admin\UserRolesController@index")->name("adminUserRoles");
-    Route::get("/users/role/edit/{id}", "Admin\UserRolesController@edit")->name("adminUserRoleEdit");
-    Route::post("/users/role/edit/{id}", "Admin\UserRolesController@update")->name("adminUserRoleUpdate");
-    Route::get("/users/role/new", "Admin\UserRolesController@create")->name("adminUserRoleCreate");
-    Route::post("/users/role/new", "Admin\UserRolesController@store")->name("adminUserRoleStore");
+        Route::get("/regisztracio/megerosites/{Email}/{confirmCode}", "AuthenticationController@RegisterStepTwo")->name("registerStepTwo");
+        Route::post("/regisztracio/megerosites/{Email}/{confirmCode}", "AuthenticationController@SendRegisterStepTwo")->name("sendRegisterStepTwo");
+        Route::get("/regisztracio/sikerult", "AuthenticationController@RegisterStepTwoSuccess")->name("registerStepTwoSuccess");
+        Route::get("/regisztracio", "AuthenticationController@Register")->name("register");
+        Route::get("/regisztracio-sikeres", "AuthenticationController@RegisterSuccess")->name("registerSuccess");
+        Route::post("/regisztracio", "AuthenticationController@SendRegister")->name("sendRegister");
 
-    /** USERSTATUSES */
-    Route::get("/users/statuses", "Admin\UserStatusesController@index")->name("adminUserStatuses");
-    Route::get("/users/status/edit/{id}", "Admin\UserStatusesController@edit")->name("adminUserStatusEdit");
-    Route::post("/users/status/edit/{id}", "Admin\UserStatusesController@update")->name("adminUserStatusUpdate");
-    Route::get("/users/status/new", "Admin\UserStatusesController@create")->name("adminUserStatusCreate");
-    Route::post("/users/status/new", "Admin\UserStatusesController@store")->name("adminUserStatusStore");
+        Route::get("/elfelejtett-jelszo/uj-jelszo/{email}/{confirmCode}", "AuthenticationController@GenerateNewPassword")->name("generateNewPassword");
+        Route::post("/elfelejtett-jelszo/uj-jelszo/{email}/{confirmCode}", "AuthenticationController@SendGenerateNewPassword")->name("sendGenerateNewPassword");
+        Route::get("/elfelejtett-jelszo", "AuthenticationController@LostPassword")->name("lostPassword");
+        Route::post("/elfelejtett-jelszo", "AuthenticationController@SendLostPassword")->name("sendLostPassword");
 
-    /** PROVINCES */
-    Route::get("/provinces", "Admin\ProvincesController@index")->name("adminProvinces");
-    Route::get("/province/edit/{id}", "Admin\ProvincesController@edit")->name("adminProvinceEdit");
-    Route::post("/province/edit/{id}", "Admin\ProvincesController@update")->name("adminProvinceUpdate");
-    Route::get("/province/new", "Admin\ProvincesController@create")->name("adminProvinceCreate");
-    Route::post("/province/new", "Admin\ProvincesController@store")->name("adminProvinceStore");
+        Route::get("/kijelentkezes", "AuthenticationController@Logout")->name("logout");
 
-    /** BILLINGTYPES */
-    Route::get("/billingTypes", "Admin\BillingTypesController@index")->name("adminBillingTypes");
-    Route::get("/billingTypes/edit/{id}", "Admin\BillingTypesController@edit")->name("adminBillingTypeEdit");
-    Route::post("/billingTypes/edit/{id}", "Admin\BillingTypesController@update")->name("adminBillingTypeUpdate");
-    Route::get("/billingTypes/new", "Admin\BillingTypesController@create")->name("adminBillingTypeCreate");
-    Route::post("/billingTypes/new", "Admin\BillingTypesController@store")->name("adminBillingTypeStore");
+        /** PROFILES */
+        Route::get("/muvesz/{userSlug}","ProfileController@show")->name("showProfile");
+    });
 
-    /**
-     * GLOBAL SETTINGS
-     */
-    Route::get("/globalSettings", "Admin\GlobalSettingsController@index")->name("adminGlobalSettings");
-    Route::get("/globalSetting/edit/{id}", "Admin\GlobalSettingsController@edit")->name("adminGlobalSettingEdit");
-    Route::post("/globalSetting/edit/{id}", "Admin\GlobalSettingsController@update")->name("adminGlobalSettingUpdate");
-    Route::get("/globalSetting/new", "Admin\GlobalSettingsController@create")->name("adminGlobalSettingCreate");
-    Route::post("/globalSetting/new", "Admin\GlobalSettingsController@store")->name("adminGlobalSettingStore");
+    /** API */
+    Route::any("/getEmail", "ApiController@getEmailAddress")->name("getEmailAddress");
+    Route::post("/getPhone", "ApiController@getPhoneNumber")->name("getEmailAddress");
 
-    /**
-     * PAGES
-     */
-    Route::get("/pages", "Admin\PageController@index")->name("adminPages");
-    Route::get("/page/edit/{id}", "Admin\PageController@edit")->name("adminPageEdit");
-    Route::post("/page/edit/{id}", "Admin\PageController@update")->name("adminPageUpdate");
-    Route::get("/page/new", "Admin\PageController@create")->name("adminPageCreate");
-    Route::post("/page/new", "Admin\PageController@store")->name("adminPageStore");
+    /** CONTACT FORM */
+    Route::post('/kapcsolat/kuldes', "PublicController@sendContactForm")->name("sendContactForm");
+
+    /** MORE PAGES */
+    Route::any("/{slug}", "PublicController@showPage");
+
+
+    Route::group(['prefix' => 'admin', 'middleware'=>'checkAdmin'], function () {
+        Route::get("/dashboard","Admin\AdminController@Dashboard")->name("adminDashboard");
+
+        /** USERS */
+        Route::get("/users","Admin\UserController@index")->name("adminUsers");
+        Route::any("/users/search", "Admin\UserController@search")->name("adminUserSearch");
+        Route::get("/user/edit/{id}","Admin\UserController@edit")->name("adminUserEdit");
+        Route::post("/user/edit/{id}","Admin\UserController@update")->name("adminUserUpdate");
+        Route::get("/user/avatar/delete/{id}","Admin\UserController@deleteAvatar")->name("deleteAvatar");
+
+        /** USERROLES */
+        Route::get("/users/roles", "Admin\UserRolesController@index")->name("adminUserRoles");
+        Route::get("/users/role/edit/{id}", "Admin\UserRolesController@edit")->name("adminUserRoleEdit");
+        Route::post("/users/role/edit/{id}", "Admin\UserRolesController@update")->name("adminUserRoleUpdate");
+        Route::get("/users/role/new", "Admin\UserRolesController@create")->name("adminUserRoleCreate");
+        Route::post("/users/role/new", "Admin\UserRolesController@store")->name("adminUserRoleStore");
+
+        /** USERSTATUSES */
+        Route::get("/users/statuses", "Admin\UserStatusesController@index")->name("adminUserStatuses");
+        Route::get("/users/status/edit/{id}", "Admin\UserStatusesController@edit")->name("adminUserStatusEdit");
+        Route::post("/users/status/edit/{id}", "Admin\UserStatusesController@update")->name("adminUserStatusUpdate");
+        Route::get("/users/status/new", "Admin\UserStatusesController@create")->name("adminUserStatusCreate");
+        Route::post("/users/status/new", "Admin\UserStatusesController@store")->name("adminUserStatusStore");
+
+        /** PROVINCES */
+        Route::get("/provinces", "Admin\ProvincesController@index")->name("adminProvinces");
+        Route::get("/province/edit/{id}", "Admin\ProvincesController@edit")->name("adminProvinceEdit");
+        Route::post("/province/edit/{id}", "Admin\ProvincesController@update")->name("adminProvinceUpdate");
+        Route::get("/province/new", "Admin\ProvincesController@create")->name("adminProvinceCreate");
+        Route::post("/province/new", "Admin\ProvincesController@store")->name("adminProvinceStore");
+
+        /** BILLINGTYPES */
+        Route::get("/billingTypes", "Admin\BillingTypesController@index")->name("adminBillingTypes");
+        Route::get("/billingTypes/edit/{id}", "Admin\BillingTypesController@edit")->name("adminBillingTypeEdit");
+        Route::post("/billingTypes/edit/{id}", "Admin\BillingTypesController@update")->name("adminBillingTypeUpdate");
+        Route::get("/billingTypes/new", "Admin\BillingTypesController@create")->name("adminBillingTypeCreate");
+        Route::post("/billingTypes/new", "Admin\BillingTypesController@store")->name("adminBillingTypeStore");
+
+        /**
+         * GLOBAL SETTINGS
+         */
+        Route::get("/globalSettings", "Admin\GlobalSettingsController@index")->name("adminGlobalSettings");
+        Route::get("/globalSetting/edit/{id}", "Admin\GlobalSettingsController@edit")->name("adminGlobalSettingEdit");
+        Route::post("/globalSetting/edit/{id}", "Admin\GlobalSettingsController@update")->name("adminGlobalSettingUpdate");
+        Route::get("/globalSetting/new", "Admin\GlobalSettingsController@create")->name("adminGlobalSettingCreate");
+        Route::post("/globalSetting/new", "Admin\GlobalSettingsController@store")->name("adminGlobalSettingStore");
+
+        /**
+         * PAGES
+         */
+        Route::get("/pages", "Admin\PageController@index")->name("adminPages");
+        Route::get("/page/edit/{id}", "Admin\PageController@edit")->name("adminPageEdit");
+        Route::post("/page/edit/{id}", "Admin\PageController@update")->name("adminPageUpdate");
+        Route::get("/page/new", "Admin\PageController@create")->name("adminPageCreate");
+        Route::post("/page/new", "Admin\PageController@store")->name("adminPageStore");
+    });
 });

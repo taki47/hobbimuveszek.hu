@@ -171,6 +171,8 @@
                                     </div>
                                 </div>
                                 <div class="col-md-4 nav-top-right">
+                                    <a href="{{ route("setlocale","hu") }}"><img src="/assets/images/hu.jpg" style="max-width:50px;"></a>
+                                    <a href="{{ route("setlocale","sv") }}"><img src="/assets/images/sv.png" style="max-width:50px;"></a>
                                     <ul class="nav align-items-center">
                                         <li class="nav-item m-r-0">
                                           <a href="{{ route("register") }}" class="btn btn-md btn-custom btn-sell-now m-r-0">
