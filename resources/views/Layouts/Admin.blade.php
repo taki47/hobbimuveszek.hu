@@ -31,6 +31,8 @@
 
     <!-- Custom Theme Style -->
     <link href="/admin/assets/css/main.css" rel="stylesheet">
+
+    @yield("styles")
 </head>
 
 <body class="nav-md">
@@ -69,6 +71,30 @@
                     <!-- sidebar menu -->
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
                         <div class="menu_section">
+                            <h3>{{ __('admin.menu.blogTitle') }}</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a href="{{ route("adminBlogs") }}"><i class="fas fa-blog"></i> {{ __('admin.menu.blogsMenu') }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route("adminBlogTags") }}"><i class="fas fa-tags"></i> {{ __('admin.menu.blogTagsMenu') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="menu_section">
+                            <h3>{{ __('admin.menu.mainPageTitle') }}</h3>
+                            <ul class="nav side-menu">
+                                <li>
+                                    <a href="{{ route("adminSliders") }}"><i class="fas fa-sliders-h"></i> {{ __('admin.menu.slidersMenu') }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route("adminTopCategories") }}"><i class="fas fa-thumbs-up"></i> {{ __('admin.menu.topCategoriesMenu') }}</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="menu_section">
                             <h3>{{ __('admin.menu.usersTitle') }}</h3>
                             <ul class="nav side-menu">
                                 <li>
@@ -86,6 +112,12 @@
                         <div class="menu_section">
                             <h3>{{ __('admin.menu.masterDataTitle') }}</h3>
                             <ul class="nav side-menu">
+                                <li>
+                                    <a href="{{ route("adminCategoryImages") }}"><i class="fas fa-images"></i> {{ __('admin.menu.categoryImagesMenu') }}</a>
+                                </li>
+                                <li>
+                                    <a href="{{ route("adminCategories") }}"><i class="fas fa-list"></i> {{ __('admin.menu.categoriesMenu') }}</a>
+                                </li>
                                 <li>
                                     <a href="{{ route("adminPages") }}"><i class="fas fa-file"></i> {{ __('admin.menu.pagesMenu') }}</a>
                                 </li>

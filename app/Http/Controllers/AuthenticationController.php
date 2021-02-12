@@ -60,6 +60,14 @@ class AuthenticationController extends Controller
         
         if (Auth::attempt($credentials,$request->remember)) {
             //auth passed
+
+            if ( Auth::user()->user_role_id=="4" ) {
+                $user = User::find(Auth::user()->id);
+                $apiToken = Hash::make(Carbon::now());
+                $user->api_token = $apiToken;
+                $user->save();
+            }
+
             return redirect()->intended('/');
         } else {
             return back()->withErrors(__('auth.login.failed'));

@@ -6,49 +6,19 @@
         <div class="row">
             <div class="slider-container">
                 <div id="main-slider" class="main-slider">
-                    <div class="item lazyload"
-                        data-bg="https://modesy.codingest.com/uploads/slider/slider_5fbb9842a145c1-25231880-99463454.jpg"
-                        data-bg-mobile="https://modesy.codingest.com/uploads/slider/slider_5fbb98448735c5-68569832-79717851.jpg">
-                        <a href="#">
+                    @foreach ($sliders as $slider)
+                        <div class="item lazyload" data-bg="/assets/images/sliders/{{ $slider->image }}" data-bg-mobile="/assets/images/sliders/{{ $slider->image }}">
                             <div class="container">
                                 <div class="row row-slider-caption align-items-center">
                                     <div class="col-12">
                                         <div class="caption">
-                                            <h2 class="title" data-animation="fadeInUp" data-delay="0.1s" style="color: #ffffff">
-                                                Töltsd fel alkotásaidat
-                                            </h2>
-                                            <p class="description" data-animation="fadeInUp" data-delay="0.5s" style="color: #ffffff">
-                                                Töltsd fel alkotásaidat, hogy megmutathasd a nagyvilágnak, vagy bocsásd eladósorba
-                                            </p>
-                                            <button class="btn btn-slider" data-animation="bounceInLeft" data-delay="0.9s" style="background-color: #222222;border-color: #222222;color: #ffffff" onClick="document.location.href='{{ route('register') }}';">
-                                                Csatlakozz hozzánk még ma
-                                            </button>
+                                            {!! $slider->text !!}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </a>
-                    </div>
-                    <div class="item lazyload"
-                        data-bg="https://modesy.codingest.com/uploads/slider/slider_5fbb98fc8d73c1-83500558-17385330.jpg"
-                        data-bg-mobile="https://modesy.codingest.com/uploads/slider/slider_5fbb98fcb036e5-31030929-79869611.jpg">
-                        <a href="#">
-                            <div class="container">
-                                <div class="row row-slider-caption align-items-center">
-                                    <div class="col-12">
-                                        <div class="caption">
-                                            <h2 class="title" data-animation="bounceIn" data-delay="0.1s" style="color: #ffffff">
-                                                Böngéssz az alkotások között
-                                            </h2>
-                                            <p class="description" data-animation="bounceInDown" data-delay="0.5s" style="color: #ffffff">
-                                                Ha megtetszik az egyik, vedd fel a kapcsolatot a művésszel.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
                 <div id="main-slider-nav" class="main-slider-nav">
                     <button class="prev"><i class="icon-arrow-left"></i></button>
@@ -61,47 +31,19 @@
         <div class="row">
             <div class="slider-container">
                 <div id="main-mobile-slider" class="main-slider">
-                    <div class="item lazyload"
-                        data-bg="https://modesy.codingest.com/uploads/slider/slider_5fbb98448735c5-68569832-79717851.jpg">
-                        <a href="#">
+                    @foreach ($sliders as $slider)
+                        <div class="item lazyload" data-bg="/assets/images/sliders/{{ $slider->image }}">
                             <div class="container">
                                 <div class="row row-slider-caption align-items-center">
                                     <div class="col-12">
                                         <div class="caption">
-                                            <h2 class="title" data-animation="fadeInUp" data-delay="0.1s" style="color: #ffffff">
-                                                Töltsd fel alkotásaidat
-                                            </h2>
-                                            <p class="description" data-animation="fadeInUp" data-delay="0.5s" style="color: #ffffff">
-                                                Töltsd fel alkotásaidat, hogy megmutathasd a nagyvilágnak, vagy bocsásd eladósorba
-                                            </p>
-                                            <button class="btn btn-slider" data-animation="fadeInUp" data-delay="0.9s" style="background-color: #222222;border-color: #222222;color: #ffffff" onClick="document.location.href='{{ route("register") }}';">
-                                                Csatlakozz hozzánk még ma
-                                            </button>
+                                            {!! $slider->text !!}
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </a>
-                    </div>
-                    <div class="item lazyload"
-                        data-bg="https://modesy.codingest.com/uploads/slider/slider_5fbb98fcb036e5-31030929-79869611.jpg">
-                        <a href="#">
-                            <div class="container">
-                                <div class="row row-slider-caption align-items-center">
-                                    <div class="col-12">
-                                        <div class="caption">
-                                            <h2 class="title" data-animation="bounceIn" data-delay="0.1s" style="color: #ffffff">
-                                                Böngéssz az alkotások között
-                                            </h2>
-                                            <p class="description" data-animation="bounceInDown" data-delay="0.5s" style="color: #ffffff">
-                                                Ha megtetszik az egyik, vedd fel a kapcsolatot a művésszel.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </a>
-                    </div>
+                        </div>
+                    @endforeach
                 </div>
                 <div id="main-mobile-slider-nav" class="main-slider-nav">
                     <button class="prev"><i class="icon-arrow-left"></i></button>
@@ -120,61 +62,22 @@
                 <!-- featured categories -->
                 <div class="featured-categories">
                     <div class="card-columns">
-                        <div class="card lazyload"
-                            data-bg="/assets/images/olajfestmeny.jpg">
-                            <a href="#">
-                                <div class="caption text-truncate">
-                                    <span>Festmények</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="card lazyload"
-                            data-bg="/assets/images/tollrajz.jpg">
-                            <a href="#">
-                                <div class="caption text-truncate">
-                                    <span>Rajzok, grafikák</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="card lazyload"
-                            data-bg="/assets/images/kepvers.jpg">
-                            <a href="#">
-                                <div class="caption text-truncate">
-                                    <span>Képversek</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="card lazyload"
-                            data-bg="/assets/images/terbeli-kep.jpg">
-                            <a href="#">
-                                <div class="caption text-truncate">
-                                    <span>Térbeli képek</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="card lazyload"
-                            data-bg="/assets/images/szobraszat.jpg">
-                            <a href="#">
-                                <div class="caption text-truncate">
-                                    <span>Szobrászat</span>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="card lazyload"
-                            data-bg="/assets/images/fenykepeszet.jfif">
-                            <a href="#">
-                                <div class="caption text-truncate">
-                                    <span>Fényképészet</span>
-                                </div>
-                            </a>
-                        </div>
+                        @foreach ($topCategories as $topCategory)
+                            <div class="card lazyload" data-bg="/assets/images/topcategories/{{ $topCategory->image }}">
+                                <a href="{{ $topCategory->link }}">
+                                    <div class="caption text-truncate">
+                                        <span>{{ $topCategory->name }}</span>
+                                    </div>
+                                </a>
+                            </div>
+                        @endforeach
                     </div>
                 </div>
             </div>
 
             <div class="col-12 section section-category-products">
                 <div class="section-header">
-                    <h3 class="title">Legújabb alkotások</h3>
+                    <h3 class="title">{{ __("frontPage.newCreations") }}</h3>
                 </div>
                 <div class="row-custom slider-container">
                     <div class="row row-product" id="slider_special_offers">
@@ -514,7 +417,7 @@
             <div class="col-12 section section-promoted">
                 <!-- promoted products -->
                 <div id="promoted_posts">
-                    <h3 class="title">Kiemelt alkotások</h3>
+                    <h3 class="title">{{ __("frontPage.promoCreations") }}</h3>
                     <div id="row_promoted_products" class="row row-product">
                         <div class="col-6 col-sm-4 col-md-3 col-mds-5 col-product">
                             <div class="product-item">
@@ -1042,9 +945,9 @@
 
             <div class="col-12 section section-latest-products">
                 <h3 class="title">
-                    <a href="#">Legnépszerűbbek</a>
+                    <a href="#">{{ __("frontPage.favoriteCreations") }}</a>
                 </h3>
-                <p class="title-exp">Legtöbbet megtekintett alkotások</p>
+                <p class="title-exp">{{ __("frontPage.favoriteCreationsHelper") }}</p>
                 <div class="row row-product">
                     <!--print products-->
                     <div class="col-6 col-sm-4 col-md-3 col-mds-5 col-product">
@@ -1549,210 +1452,61 @@
             
             <div class="col-12 section section-blog m-0">
                 <h3 class="title">
-                    <a href="#">Blog</a>
+                    <a href="#">{{ __("frontPage.blog") }}</a>
                 </h3>
-                <p class="title-exp">Legfrissebb blog bejegyzések</p>
+                <p class="title-exp">{{ __("frontPage.blogHelper") }}</p>
                 <div class="row-custom">
                     <!-- main slider -->
 
                     <div class="blog-slider-container">
                         <div id="blog-slider" class="blog-slider">
-                            <div class="blog-item">
-                                <div class="blog-item-img">
-                                    <a
-                                        href="#">
-                                        <img src="https://modesy.codingest.com/assets/img/img_bg_blog_small.jpg"
-                                            data-lazy="https://modesy.codingest.com/uploads/blog/202011/img_thumb_5fbb82febf7ae3-86334705-22868513.jpg"
-                                            alt="Lose away off why half led have near" class="img-fluid" />
-                                    </a>
+                            @foreach ($blogs as $blog)
+                                @php
+                                    $tag = $blog->getFirstTag($blog->id);
+                                @endphp
+
+                                <div class="blog-item">
+                                    <div class="blog-item-img">
+                                        <a href="{{ route("blogDetail", [$tag->url, $blog->url]) }}">
+                                            <img src="/blogs/{{ $blog->image }}" data-lazy="/blogs/{{ $blog->image }}" alt="{{ $blog->image_alt }}" title="{{ $blog->image_title }}" class="img-fluid" style="max-height:265px;margin:auto;" />
+                                        </a>
+                                    </div>
+                                    <h3 class="blog-post-title text-center">
+                                        <a href="{{ route("blogDetail", [$tag->url, $blog->url]) }}">
+                                            @if ( strlen($blog->name)>40 )
+                                                {{ substr($blog->name,0,40) }}...
+                                            @else
+                                                {{ $blog->name }}
+                                            @endif
+                                            
+                                        </a>
+                                    </h3>
+                                    <div class="blog-post-meta text-center">
+                                        <a href="{{ route("blogTagFilter", $tag->url) }}">
+                                            <i class="icon-folder"></i>
+                                            {{ $tag->name }}
+                                        </a>
+                                        <span>
+                                            <i class="icon-clock"></i>
+                                            {{ $blog->created_at->diffForHumans() }}
+                                        </span>
+                                    </div>
+                                    <div class="blog-post-description text-center">
+                                        @if ( strlen($blog->lead)>100 )
+                                            {{ substr($blog->lead,0,100) }}...
+                                        @else
+                                            {{ $blog->lead }}
+                                        @endif
+                                        
+                                    </div>
                                 </div>
-                                <h3 class="blog-post-title">
-                                    <a
-                                        href="#">
-                                        Lose away off why half led have near </a>
-                                </h3>
-                                <div class="blog-post-meta">
-                                    <a href="#">
-                                        <i class="icon-folder"></i>Life Style </a>
-                                    <span><i class="icon-clock"></i>16 days ago</span>
-                                </div>
-                                <div class="blog-post-description">
-                                    In a free hour, when our power of choice is untrammelled and when nothing
-                                    prevents our being able to... </div>
-                            </div>
-                            <div class="blog-item">
-                                <div class="blog-item-img">
-                                    <a
-                                        href="#">
-                                        <img src="https://modesy.codingest.com/assets/img/img_bg_blog_small.jpg"
-                                            data-lazy="https://modesy.codingest.com/uploads/blog/202011/img_thumb_5fbb831490afa1-18820914-47507420.jpg"
-                                            alt="Various versions have evolved over the years" class="img-fluid" />
-                                    </a>
-                                </div>
-                                <h3 class="blog-post-title">
-                                    <a
-                                        href="#">
-                                        Various versions have evolved over the years </a>
-                                </h3>
-                                <div class="blog-post-meta">
-                                    <a href="#">
-                                        <i class="icon-folder"></i>Fashion </a>
-                                    <span><i class="icon-clock"></i>16 days ago</span>
-                                </div>
-                                <div class="blog-post-description">
-                                    We denounce with righteous indignation and dislike men who are so beguiled and
-                                    demoralized by the charms... </div>
-                            </div>
-                            <div class="blog-item">
-                                <div class="blog-item-img">
-                                    <a
-                                        href="#/contrary-to-popular-belief-lorem-ipsum-is-not-simply-random-text">
-                                        <img src="https://modesy.codingest.com/assets/img/img_bg_blog_small.jpg"
-                                            data-lazy="https://modesy.codingest.com/uploads/blog/202011/img_thumb_5fbb832b8d6623-49351852-51848363.jpg"
-                                            alt="Contrary to popular belief, Lorem Ipsum is not simply random text"
-                                            class="img-fluid" />
-                                    </a>
-                                </div>
-                                <h3 class="blog-post-title">
-                                    <a
-                                        href="#/contrary-to-popular-belief-lorem-ipsum-is-not-simply-random-text">
-                                        Contrary to popular belief, Lorem Ipsum is not simply random... </a>
-                                </h3>
-                                <div class="blog-post-meta">
-                                    <a href="#">
-                                        <i class="icon-folder"></i>Life Style </a>
-                                    <span><i class="icon-clock"></i>16 days ago</span>
-                                </div>
-                                <div class="blog-post-description">
-                                    Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots
-                                    in a piece of classical... </div>
-                            </div>
-                            <div class="blog-item">
-                                <div class="blog-item-img">
-                                    <a
-                                        href="#">
-                                        <img src="https://modesy.codingest.com/assets/img/img_bg_blog_small.jpg"
-                                            data-lazy="https://modesy.codingest.com/uploads/blog/202011/img_thumb_5fbb8347b4ad52-55585036-99457682.jpg"
-                                            alt="Decisively advantages nor expression" class="img-fluid" />
-                                    </a>
-                                </div>
-                                <h3 class="blog-post-title">
-                                    <a
-                                        href="#/decisively-advantages-nor-expression">
-                                        Decisively advantages nor expression </a>
-                                </h3>
-                                <div class="blog-post-meta">
-                                    <a href="#">
-                                        <i class="icon-folder"></i>Life Style </a>
-                                    <span><i class="icon-clock"></i>16 days ago</span>
-                                </div>
-                                <div class="blog-post-description">
-                                    The wise man therefore always holds in these matters to this principle of
-                                    selection: he rejects pleasures... </div>
-                            </div>
-                            <div class="blog-item">
-                                <div class="blog-item-img">
-                                    <a
-                                        href="#">
-                                        <img src="https://modesy.codingest.com/assets/img/img_bg_blog_small.jpg"
-                                            data-lazy="https://modesy.codingest.com/uploads/blog/202011/img_thumb_5fbb8361acaa70-49574506-96219532.jpg"
-                                            alt="Certain circumstances and owing to the claims" class="img-fluid" />
-                                    </a>
-                                </div>
-                                <h3 class="blog-post-title">
-                                    <a
-                                        href="#/certain-circumstances-and-owing-to-the-claims">
-                                        Certain circumstances and owing to the claims </a>
-                                </h3>
-                                <div class="blog-post-meta">
-                                    <a href="#">
-                                        <i class="icon-folder"></i>Life Style </a>
-                                    <span><i class="icon-clock"></i>16 days ago</span>
-                                </div>
-                                <div class="blog-post-description">
-                                    Obligations of business it will frequently occur that pleasures have to be
-                                    repudiated and annoyances... </div>
-                            </div>
-                            <div class="blog-item">
-                                <div class="blog-item-img">
-                                    <a
-                                        href="#">
-                                        <img src="https://modesy.codingest.com/assets/img/img_bg_blog_small.jpg"
-                                            data-lazy="https://modesy.codingest.com/uploads/blog/202011/img_thumb_5fbb8381c52a71-31165999-25750519.jpg"
-                                            alt="Many desktop publishing packages" class="img-fluid" />
-                                    </a>
-                                </div>
-                                <h3 class="blog-post-title">
-                                    <a
-                                        href="#">
-                                        Many desktop publishing packages </a>
-                                </h3>
-                                <div class="blog-post-meta">
-                                    <a href="#">
-                                        <i class="icon-folder"></i>Fashion </a>
-                                    <span><i class="icon-clock"></i>16 days ago</span>
-                                </div>
-                                <div class="blog-post-description">
-                                    There are many variations of passages of Lorem Ipsum available, but the majority
-                                    have suffered alteration... </div>
-                            </div>
-                            <div class="blog-item">
-                                <div class="blog-item-img">
-                                    <a
-                                        href="#">
-                                        <img src="https://modesy.codingest.com/assets/img/img_bg_blog_small.jpg"
-                                            data-lazy="https://modesy.codingest.com/uploads/blog/202011/img_thumb_5fbb83973bdf78-41843225-93379781.jpg"
-                                            alt="All the Lorem Ipsum generators on the Internet"
-                                            class="img-fluid" />
-                                    </a>
-                                </div>
-                                <h3 class="blog-post-title">
-                                    <a
-                                        href="#/all-the-lorem-ipsum-generators-on-the-internet">
-                                        All the Lorem Ipsum generators on the Internet </a>
-                                </h3>
-                                <div class="blog-post-meta">
-                                    <a href="#">
-                                        <i class="icon-folder"></i>Life Style </a>
-                                    <span><i class="icon-clock"></i>16 days ago</span>
-                                </div>
-                                <div class="blog-post-description">
-                                    It uses a dictionary of over 200 Latin words, combined with a handful of model
-                                    sentence structures,... </div>
-                            </div>
-                            <div class="blog-item">
-                                <div class="blog-item-img">
-                                    <a
-                                        href="#">
-                                        <img src="https://modesy.codingest.com/assets/img/img_bg_blog_small.jpg"
-                                            data-lazy="https://modesy.codingest.com/uploads/blog/202011/img_thumb_5fbb82bf7acaa1-58924393-33575481.jpg"
-                                            alt="There are many variations of passages" class="img-fluid" />
-                                    </a>
-                                </div>
-                                <h3 class="blog-post-title">
-                                    <a
-                                        href="#">
-                                        There are many variations of passages </a>
-                                </h3>
-                                <div class="blog-post-meta">
-                                    <a href="https://modesy.codingest.com/blog/business">
-                                        <i class="icon-folder"></i>Business </a>
-                                    <span><i class="icon-clock"></i>16 days ago</span>
-                                </div>
-                                <div class="blog-post-description">
-                                    All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks
-                                    as necessary, making... </div>
-                            </div>
+                            @endforeach
                         </div>
                         <div id="blog-slider-nav" class="blog-slider-nav">
                             <button class="prev"><i class="icon-arrow-left"></i></button>
                             <button class="next"><i class="icon-arrow-right"></i></button>
                         </div>
                     </div>
-
-
-
-
                 </div>
             </div>
         </div>

@@ -55,6 +55,12 @@ Route::group(['middleware'=>'language'],function () {
     /** CONTACT FORM */
     Route::post('/kapcsolat/kuldes', "PublicController@sendContactForm")->name("sendContactForm");
 
+    /** BLOG */
+    Route::get("/blog/{tag}/{url}", "PublicController@blogDetail")->name("blogDetail");
+    Route::get("/blog/{tag}", "PublicController@blogTagFilter")->name("blogTagFilter");
+    Route::get("/blog", "PublicController@blogList")->name("blog");
+    
+
     /** MORE PAGES */
     Route::any("/{slug}", "PublicController@showPage");
 
@@ -114,5 +120,70 @@ Route::group(['middleware'=>'language'],function () {
         Route::post("/page/edit/{id}", "Admin\PageController@update")->name("adminPageUpdate");
         Route::get("/page/new", "Admin\PageController@create")->name("adminPageCreate");
         Route::post("/page/new", "Admin\PageController@store")->name("adminPageStore");
+
+
+        /**
+         * CATEGORIES
+         */
+        Route::get("/categories", "Admin\CategoryController@index")->name("adminCategories");
+
+        /**
+         * CATEGORY IMAGES
+         */
+        Route::get("/categoryImages", "Admin\CategoryImageController@index")->name("adminCategoryImages");
+        Route::get("/categoryImage/edit/{id}", "Admin\CategoryImageController@edit")->name("adminCategoryImageEdit");
+        Route::post("/categoryImage/edit/{id}", "Admin\CategoryImageController@update")->name("adminCategoryImageUpdate");
+        Route::get("/categoryImage/new", "Admin\CategoryImageController@create")->name("adminCategoryImageCreate");
+        Route::post("/categoryImage/new", "Admin\CategoryImageController@store")->name("adminCategoryImageStore");
+        Route::delete("/categoryImage/delete/{id}", "Admin\CategoryImageController@destroy")->name("adminCategoryImageDestroy");
+
+        /**
+         * SLIDERS
+         */
+        Route::get("/sliders", "Admin\SliderController@index")->name("adminSliders");
+        Route::get("/slider/edit/{id}", "Admin\SliderController@edit")->name("adminSliderEdit");
+        Route::post("/slider/edit/{id}", "Admin\SliderController@update")->name("adminSliderUpdate");
+        Route::get("/slider/new", "Admin\SliderController@create")->name("adminSliderCreate");
+        Route::post("/slider/new", "Admin\SliderController@store")->name("adminSliderStore");
+        Route::delete("/slider/delete/{id}", "Admin\SliderController@destroy")->name("adminSliderDestroy");
+
+        /**
+         * TOPCATEGORIES
+         */
+        Route::get("/topcategories", "Admin\TopCategoryController@index")->name("adminTopCategories");
+        Route::get("/topcategory/edit/{id}", "Admin\TopCategoryController@edit")->name("adminTopCategoryEdit");
+        Route::post("/topcategory/edit/{id}", "Admin\TopCategoryController@update")->name("adminTopCategoryUpdate");
+        Route::get("/topcategory/new", "Admin\TopCategoryController@create")->name("adminTopCategoryCreate");
+        Route::post("/topcategory/new", "Admin\TopCategoryController@store")->name("adminTopCategoryStore");
+        Route::delete("/topcategory/delete/{id}", "Admin\TopCategoryController@destroy")->name("adminTopCategoryDestroy");
+
+        /**
+         * BLOGS
+         */
+        Route::get("/blogs", "Admin\BlogController@index")->name("adminBlogs");
+        Route::get("/blog/edit/{id}", "Admin\BlogController@edit")->name("adminBlogEdit");
+        Route::post("/blog/edit/{id}", "Admin\BlogController@update")->name("adminBlogUpdate");
+        Route::get("/blog/new", "Admin\BlogController@create")->name("adminBlogCreate");
+        Route::post("/blog/new", "Admin\BlogController@store")->name("adminBlogStore");
+        Route::delete("/blog/delete/{id}", "Admin\BlogController@destroy")->name("adminBlogDestroy");
+
+        /**
+         * BLOG TAGS
+         */
+        Route::get("/blogtags", "Admin\BlogTagController@index")->name("adminBlogTags");
+        Route::get("/blogtag/edit/{id}", "Admin\BlogTagController@edit")->name("adminBlogTagEdit");
+        Route::post("/blogtag/edit/{id}", "Admin\BlogTagController@update")->name("adminBlogTagUpdate");
+        Route::get("/blogtag/new", "Admin\BlogTagController@create")->name("adminBlogTagCreate");
+        Route::post("/blogtag/new", "Admin\BlogTagController@store")->name("adminBlogTagStore");
+        Route::delete("/blogtag/delete/{id}", "Admin\BlogTagController@destroy")->name("adminBlogTagDestroy");
     });
 });
+
+/**
+ * CKFINDER
+ */
+Route::any('/ckfinder/connector', '\CKSource\CKFinderBridge\Controller\CKFinderController@requestAction')
+    ->name('ckfinder_connector');
+
+Route::any('/ckfinder/browser', '\CKSource\CKFinderBridge\Controller\CKFinderController@browserAction')
+    ->name('ckfinder_browser');

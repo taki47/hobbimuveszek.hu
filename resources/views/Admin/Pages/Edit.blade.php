@@ -62,8 +62,8 @@
     <script>
         tinymce.init({
             selector: '#inputBody',
-            plugins: 'autoresize fullscreen a11ychecker advcode casechange formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable',
-            toolbar: 'a11ycheck checklist code bold italic underline heading align formatpainter pageembed permanentpen table fullscreen',
+            plugins: 'autoresize fullscreen autolink lists media table',
+            toolbar: 'bold italic underline heading align pageembed table fullscreen',
             toolbar_mode: 'floating',
             extended_valid_elements: 'span[*]'
         });

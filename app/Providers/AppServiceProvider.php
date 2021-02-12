@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Jenssegers\Date\Date;
 
 use App\Models\Global_setting;
+use App\Models\Category;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,7 +31,8 @@ class AppServiceProvider extends ServiceProvider
         Date::setLocale(env("TIMEZONE_LOCALE"));
 
         view()->composer('*', function($view) {
-            $view->with('global', Global_setting::all());
+            $view->with('global', Global_setting::all())
+                ->with('parentCategories', Category::where("parent_id", "0")->orderBy("position")->get());
         });
     }
 }
