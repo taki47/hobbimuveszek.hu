@@ -108,3 +108,17 @@ function sendForm(token) {
     $("#gRecaptchaResponse").val(token);
     $("#form").submit();
 }
+
+$(".search-select .dropdown-item").on("click", function() {
+    let value = $(this).attr("data-value");
+    let label = $(this).attr("data-label");
+    $(".search_type").val(value);
+    $(".search-select .dropdown-toggle").html(label);
+
+    if ( value=="creation" ) {
+        $(".search-form").attr("action",searchCreationURL);
+    }
+    if ( value=="artist" ) {
+        $(".search-form").attr("action",searchArtistURL);
+    }
+});

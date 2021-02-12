@@ -26,11 +26,11 @@
                                 <div class="row-custom">
                                     <p class="p-last-seen">
                                         <span class="last-seen last-seen-{{ $user->isOnline() ? 'online' : 'offline' }}"> <i class="icon-circle"></i>
-                                            {{ __("profile.lastLogin") }}
+                                            {{ __("artists.profile.lastLogin") }}
                                             @if ( $user->last_login )
                                             {{ Jenssegers\Date\Date::parse($user->last_login)->format('Y. F d.') }}
                                             @else
-                                                {{ __("profile.lastLoginNever") }}
+                                                {{ __("artists.profile.lastLoginNever") }}
                                             @endif
                                         </span>
                                     </p>
@@ -42,7 +42,7 @@
 
                                 <div class="row-custom user-contact">
                                     <span class="info">
-                                        {{ __("profile.memberSince") }}
+                                        {{ __("artists.profile.memberSince") }}
                                         {{ Jenssegers\Date\Date::parse($user->created_at)->format('Y. F d.') }}
                                     </span>
                                     @if ( $user->phone )
@@ -51,12 +51,12 @@
                                             
                                             <div class="d-inline-block showButtonContainer" id="show_phone_number">
                                                 <button class="g-recaptcha" data-sitekey="{{ env("GCAPTCHA_SITE_KEY") }}" data-callback="getPhoneNumber">
-                                                    {{ __("profile.show") }}
+                                                    {{ __("artists.profile.show") }}
                                                 </button>
                                             </div>
                                             
                                             <!--<a href="javascript:void(0)" id="show_phone_number" class="d-inline-block">
-                                                {{ __("profile.show") }}
+                                                {{ __("artists.profile.show") }}
                                             </a>-->
                                         </span>
                                     @endif
@@ -67,7 +67,7 @@
                                         <div id="email-spinner" class="d-none"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
                                         <div class="d-inline-block showButtonContainer" id="show_email_address">
                                             <button class="g-recaptcha" data-sitekey="{{ env("GCAPTCHA_SITE_KEY") }}" data-callback="getEmailAddress">
-                                                {{ __("profile.show") }}
+                                                {{ __("artists.profile.show") }}
                                             </button>
                                         </div>
                                     </span>

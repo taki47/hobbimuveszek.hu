@@ -7,6 +7,7 @@
     <title>{{ env("APP_NAME") }} | {{ isset($page) ? $page->title : "" }}</title>
     <meta name="description" content="{{ isset($page) ? $page->description : "" }}" />
     <meta name="keywords" content="{{ isset($page) ? $page->keywords : "" }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset("/assets/images/".$global[3]->value) }}" type="image/vnd.microsoft.icon" />
     <link rel="canonical" href="{{ env("APP_URL") }}" />
     <link rel="apple-touch-icon" href="{{ asset("/assets/images/apple-touch-icon.png") }}" type="image/png" />
@@ -143,21 +144,30 @@
                                             </a>
                                         </div>
                                         <div class="top-search-bar">
-                                            <form action="#" id="form_validate_search"
-                                                class="form_search_main" method="get" accept-charset="utf-8">
+                                            <form action="{{ isset($search_type_data) && $search_type_data=="artist" ? route("searchArtist") : route("searchCreation") }}" class="form_search_main search-form" method="POST" accept-charset="utf-8">
+                                                @csrf
+                                                @foreach($errors->all() as $error)
+                                                    <div class="alert alert-danger">
+                                                        <ul>
+                                                            <li>{{ $error }}</li>
+                                                        </ul>
+                                                    </div>
+                                                @endforeach
                                                 <div class="left">
                                                     <div class="dropdown search-select">
                                                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                                            {{ __("pageItems.search.creation") }}
+                                                            @if ( isset($search_type_data) )
+                                                                {{ $search_type_value }}
+                                                            @else
+                                                                {{ __("pageItems.search.creation") }}
+                                                            @endif
                                                         </button>
                                                         <div class="dropdown-menu">
-                                                            <a class="dropdown-item" data-value="creation"
-                                                                href="javascript:void(0)">{{ __("pageItems.search.creation") }}</a>
-                                                            <a class="dropdown-item" data-value="artist"
-                                                                href="javascript:void(0)">{{ __("pageItems.search.artist") }}</a>
+                                                            <a class="dropdown-item" data-value="creation" data-label="{{ __("pageItems.search.creation") }}" href="javascript:void(0)">{{ __("pageItems.search.creation") }}</a>
+                                                            <a class="dropdown-item" data-value="artist" data-label="{{ __("pageItems.search.artist") }}" href="javascript:void(0)">{{ __("pageItems.search.artist") }}</a>
                                                         </div>
                                                     </div>
-                                                    <input type="hidden" class="search_type_input" name="search_type" value="product">
+                                                    <input type="hidden" class="search_type_input search_type" name="search_type" value="{{ isset($search_type_data) ? $search_type_data : "creation" }}">
                                                 </div>
                                                 <div class="right">
                                                     <input
@@ -165,10 +175,12 @@
                                                         name="search"
                                                         maxlength="300"
                                                         id="input_search"
-                                                        class="form-control input-search" value=""
-                                                        placeholder="{{ __("pageItems.search.searchFieldPlaceholder") }}" required
-                                                        autocomplete="off">
-                                                    <button class="btn btn-default btn-search"><i class="icon-search"></i></button>
+                                                        class="form-control input-search"
+                                                        placeholder="{{ __("pageItems.search.searchFieldPlaceholder") }}"
+                                                        required
+                                                        autocomplete="off"
+                                                        value="{{ isset($search_value) ? $search_value : "" }}">
+                                                    <button  class="btn btn-success text-white btn-search" type="submit"><i class="icon-search"></i></button>
                                                     <div id="response_search_results" class="search-results-ajax"></div>
                                                 </div>
                                             </form>
@@ -287,23 +299,27 @@
                     </div>
                     <div class="row">
                         <div class="top-search-bar mobile-search-form ">
-                            <form action="#" id="form_validate_search_mobile"
-                                method="get" accept-charset="utf-8">
+                            <form action="{{ isset($search_type_data) && $search_type_data=="artist" ? route("searchArtist") : route("searchCreation") }}" method="post" accept-charset="utf-8" class="search-form">
+                                @csrf
                                 <div class="left">
                                     <div class="dropdown search-select">
                                         <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
-                                            {{ __("pageItems.search.creation") }}
+                                            @if ( isset($search_type_data) )
+                                                {{ $search_type_value }}
+                                            @else
+                                                {{ __("pageItems.search.creation") }}
+                                            @endif
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" data-value="creation" href="javascript:void(0)">{{ __("pageItems.search.creation") }}</a>
-                                            <a class="dropdown-item" data-value="artist" href="javascript:void(0)">{{ __("pageItems.search.artist") }}</a>
+                                            <a class="dropdown-item" data-value="creation" data-label="{{ __("pageItems.search.creation") }}" href="javascript:void(0)">{{ __("pageItems.search.creation") }}</a>
+                                            <a class="dropdown-item" data-value="artist" data-label="{{ __("pageItems.search.artist") }}" href="javascript:void(0)">{{ __("pageItems.search.artist") }}</a>
                                         </div>
                                     </div>
-                                    <input type="hidden" id="search_type_input_mobile" class="search_type_input" name="search_type" value="product">
+                                    <input type="hidden" id="search_type_input_mobile" class="search_type_input search_type" name="search_type" value="{{ isset($search_type_data) ? $search_type_data : "creation" }}">
                                 </div>
                                 <div class="right">
-                                    <input type="text" id="input_search_mobile" name="search" maxlength="300" pattern=".*\S+.*" class="form-control input-search" value="" placeholder="{{ __("pageItems.search.searchFieldPlaceholder") }}" required>
-                                    <button class="btn btn-default btn-search"><i class="icon-search"></i></button>
+                                    <input type="text" id="input_search_mobile" name="search" maxlength="300" class="form-control input-search" value="{{ isset($search_value) ? $search_value : "" }}" placeholder="{{ __("pageItems.search.searchFieldPlaceholder") }}" required>
+                                    <button class="btn btn-default btn-search" type="submit"><i class="icon-search"></i></button>
                                 </div>
                             </form>
                         </div>
@@ -453,7 +469,8 @@
                 <li><a href="https://www.pinterest.com/" class="pinterest"><i class="icon-pinterest"></i></a></li>
             </ul>
         </div>
-    </div><input type="hidden" class="search_type_input" name="search_type" value="product">
+    </div>
+    <input type="hidden" class="search_type_input" name="search_type" value="product">
 
     @yield('content')
 
@@ -591,7 +608,12 @@
     <script src="{{ asset("/assets/js/main.js?ver=".env("APP_VER")) }}"></script>
     <script src="https://kit.fontawesome.com/a00cdb7d90.js"></script>
     <script type="text/javascript" src="https://www.google.com/recaptcha/api.js" async defer></script>
-
+    <script>
+        let app_base_url = "{{ env("APP_URL") }}";
+        let searchNoResultText = "{{ __('pageItems.search.validation.noResults') }}";
+        let searchArtistURL = "{{ route('searchArtist') }}";
+        let searchCreationURL = "{{ route('searchCreation') }}";
+    </script>
     @yield('script')
 </body>
 

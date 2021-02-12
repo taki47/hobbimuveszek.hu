@@ -21,7 +21,11 @@ return [
     "search" => [
         "creation" => "Alkotás",
         "artist" => "Művész",
-        "searchFieldPlaceholder" => "Keresés..."
+        "searchFieldPlaceholder" => "Keresés...",
+        "validation" => [
+            "gRecaptchaResponse" => "Kérjük, próbálja újra!",
+            "noResults" => "Sajnáljuk, nincs találat",
+        ],
     ],
     "errorpages" => [
         "401" => "<p>Az oldal megtekintéséhez nincs megfelelő jogosultságod!</p><a href='/' class='btn btn-success text-white'>Vissza a főoldalra</a>",

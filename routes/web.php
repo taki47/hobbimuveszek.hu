@@ -60,6 +60,10 @@ Route::group(['middleware'=>'language'],function () {
     Route::get("/blog/{tag}", "PublicController@blogTagFilter")->name("blogTagFilter");
     Route::get("/blog", "PublicController@blogList")->name("blog");
     
+    /** SEARCH */
+    Route::post("/kereses/ajax-search", "SearchController@AjaxSearch")->name("ajaxSearch");
+    Route::post("/muveszek", "SearchController@SearchArtist")->name("searchArtist");
+    Route::post("/alkotasok", "SearchController@SearchCreation")->name("searchCreation");
 
     /** MORE PAGES */
     Route::any("/{slug}", "PublicController@showPage");
