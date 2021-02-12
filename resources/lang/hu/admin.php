@@ -24,6 +24,7 @@ return [
         "mainPageTitle" => "Főoldal elemek",
         "slidersMenu" => "Slider",
         "topCategoriesMenu" => "Top kategóriák",
+        "blogTitle" => "Blog kezelése",
         "blogsMenu" => "Blog",
         "blogTagsMenu" => "Blog tag",
     ],

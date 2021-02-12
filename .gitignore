@@ -7,6 +7,7 @@
 /vendor
 /public/uploads/*
 .env
+.env_srv
 .env.backup
 .phpunit.result.cache
 Homestead.json
