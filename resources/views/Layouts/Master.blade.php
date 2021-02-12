@@ -182,7 +182,7 @@
                                         <ul class="nav align-items-center">
                                             <li class="nav-item m-r-0">
                                             <a href="{{ route("register") }}" class="btn btn-md btn-custom btn-sell-now m-r-0">
-                                                {{ __("homePage.registerNow") }}
+                                                {{ __("pageItems.registerNow") }}
                                             </a>
                                             </li>
                                         </ul>
@@ -320,7 +320,7 @@
                 <div class="row">
                     <div class="col-sm-12 mobile-nav-buttons">
                         <a href="{{ route("register") }}" class="btn btn-md btn-custom btn-block">
-                            {{ __("homePage.registerNow") }}
+                            {{ __("pageItems.registerNow") }}
                         </a>
                     </div>
                 </div>
