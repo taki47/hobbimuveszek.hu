@@ -26,19 +26,28 @@ class ProfileController extends Controller
 
         $socialMedias = User_social_media::where("user_id",$user->id)->get();
 
+        $following = [];
+        $follower = [];
+
+        if ( \Auth::user() ) {
+            $following = Follow::where("from_user_id", \Auth::user()->id)->orderBy("created_at")->get();
+            $follower  = Follow::where("to_user_id", \Auth::user()->id)->orderBy("created_at")->get();
+        }
+
         return view('Profile.Show')
             ->with("user", $user)
-            ->with("socialMedias", $socialMedias);
+            ->with("socialMedias", $socialMedias)
+            ->with("following", $following)
+            ->with("follower", $follower);
     }
 
-    public function Follow(Request $request, $toUserId)
+    public function Follow(Request $request)
     {
-        $fromUserId = $request->userId;
-
-        if ( $fromUserId ) {
+        $toUserId = $request->userId;
+        if ( $toUserId ) {
             $follow = new Follow();
-            $follow->from_user_id = $fromUserId;
-            $follow->to_user_id = $toUserId;
+            $follow->from_user_id = \Auth::user()->id;
+            $follow->to_user_id   = $toUserId;
             $follow->save();
 
             return true;
@@ -49,11 +58,11 @@ class ProfileController extends Controller
         return false;
     }
 
-    public function UnFollow(Request $request, $userId)
+    public function UnFollow(Request $request)
     {
-        $fromUserId = $request->userId;
-        if ( $fromUserId ) {
-            $follow = Follow::where("from_user_id",$fromUserId);
+        $toUserId = $request->userId;
+        if ( $toUserId ) {
+            $follow = Follow::where("to_user_id",$toUserId)->where("from_user_id",\Auth::user()->id);
             $follow->delete();
 
             return true;

@@ -66,8 +66,10 @@ Route::group(['middleware'=>'language'],function () {
     Route::post("/alkotasok", "SearchController@SearchCreation")->name("searchCreation");
 
     /** FOLLOW */
-    Route::post("/follow/{userId}", "ProfileController@Follow")->name("follow");
-    Route::post("/unfollow/{userId}", "ProfileController@UnFollow")->name("unFollow");
+    Route::post("/follow", "ProfileController@Follow")->name("follow");
+    Route::post("/unfollow", "ProfileController@UnFollow")->name("unFollow");
+    Route::get("/following", "ProfileController@Following")->name("following");
+    Route::get("/follower", "ProfileController@Follower")->name("follower");
 
     /** MORE PAGES */
     Route::any("/{slug}", "PublicController@showPage");

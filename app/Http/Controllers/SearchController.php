@@ -13,7 +13,7 @@ class SearchController extends Controller
     public function SearchArtist(Request $request)
     {
         $searchValue = $request->search;
-        $users = User::select("slug", "name", "avatar")
+        $users = User::select("slug", "name", "avatar", "id")
                     ->where("name", "LIKE", "%".$searchValue."%")
                     ->where("user_role_id", 3)
                     ->get();

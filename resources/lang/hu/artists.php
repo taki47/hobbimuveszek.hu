@@ -9,14 +9,20 @@ return [
         "menu" => [
             "myProfile" => "Adatlapom",
             "myCreations" => "Alkotásaim",
-            "followMe" => "Követnek engem",
-            "followThem" => "Követem őket",
+            "follower" => "Követnek engem",
+            "following" => "Követem őket",
             "myReviews" => "Értékeléseim",
             "myMessages" => "Üzeneteim",
             "profile" => "Adatlapja",
             "creations" => "Alkotásai",
             "reviews" => "Értékelései",
         ],
+        "following" => [
+            "nobodyFollowing" => "Jelenleg senkit nem követsz",
+        ],
+        "follower" => [
+            "nobodyFollower" => "Jelenleg senkit nem követ téged",
+        ]
     ],
     "artistSearchPage" => [
         "title" => "Művészek",

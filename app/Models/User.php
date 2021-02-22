@@ -89,4 +89,14 @@ class User extends Authenticatable
             return false;
         }
     }
+
+    public function FollowingCount()
+    {
+        return Follow::where("from_user_id", \Auth::user()->id)->count();
+    }
+
+    public function FollowerCount()
+    {
+        return Follow::where("to_user_id", \Auth::user()->id)->count();
+    }
 }

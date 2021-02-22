@@ -108,21 +108,26 @@
                                 <div class="row-custom profile-buttons">
                                     <div class="row-custom profile-buttons mb-2">
                                         <div class="buttons">
-                                            <button class="btn btn-md btn-outline-gray" data-toggle="modal" data-target="#loginModal"><i class="icon-envelope"></i>Levelet írok neki</button>
+                                            @if ( Auth::user() && Auth::user()->id != $user->id )
+                                                <!-- LEVÉL -->
+                                                <button class="btn btn-md btn-outline-gray" data-toggle="modal" data-target="#loginModal"><i class="icon-envelope"></i>Levelet írok neki</button>
                                             
-                                            @if ( Auth::user() )
-                                                @if ( Auth::user()->isFollow($user->id) )
-                                                    <button class="btn btn-md btn-outline-gray follow unfollow">
+                                                <!-- KÖVETÉS -->
+                                                @if ( Auth::user() && Auth::user()->isFollow($user->id) )
+                                                    <button class="btn btn-md btn-outline-gray follow unfollow" aria-data="{{ $user->id }}">
                                                         <div class="d-none follow-spinner"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
                                                         <i class="icon-user-minus"></i>{{ __('artists.artistSearchPage.unFollowTxt') }}
                                                     </button>
-                                                @else
-                                                    <button class="btn btn-md btn-outline-gray follow">
+                                                @elseif( Auth::user() && !Auth::user()->isFollow($user->id) )
+                                                    <button class="btn btn-md btn-outline-gray follow" aria-data="{{ $user->id }}">
                                                         <div class="d-none follow-spinner"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
                                                         <i class="icon-user-plus"></i>{{ __('artists.artistSearchPage.followTxt') }}
                                                     </button>
+                                                @else
+                                                    <button class="btn btn-md btn-outline-gray" data-toggle="modal" data-target="#loginModal"><i class="icon-user-plus"></i>{{ __('artists.artistSearchPage.followTxt') }}</button>
                                                 @endif
-                                            @else
+                                            @elseif( !Auth::user() )
+                                                <button class="btn btn-md btn-outline-gray" data-toggle="modal" data-target="#loginModal"><i class="icon-envelope"></i>Levelet írok neki</button>
                                                 <button class="btn btn-md btn-outline-gray" data-toggle="modal" data-target="#loginModal"><i class="icon-user-plus"></i>{{ __('artists.artistSearchPage.followTxt') }}</button>
                                             @endif
                                         </div>
@@ -159,62 +164,62 @@
         <div class="row">
             <div class="col-sm-12 col-md-3">
                 <!--profile page tabs-->
-                <div class="profile-tabs">
+                <div class="profile-tabs nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                     <ul class="nav">
                         @if ( Auth::user() && Auth::user()->id==$user->id )
-                            <li class="nav-item active">
-                                <a class="nav-link" href="{{ route("showProfile", \Auth::user()->id) }}">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#v-pills-profile" data-toggle="pill" id="v-pills-profile-tab" aria-controls="v-pills-profile" aria-selected="true">
                                     <span>{{ __("artists.profile.menu.myProfile") }}</span>
                                 </a>
                             </li>
                             @if ( $user->user_role_id==3 )
-                                <li class="nav-item ">
-                                    <a class="nav-link" href="#">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#v-pills-creations" data-toggle="pill" id="v-pills-creations-tab" aria-controls="v-pills-creations" aria-selected="false">
                                         <span>{{ __("artists.profile.menu.myCreations") }}</span>
                                         <span class="count">(5)</span>
                                     </a>
                                 </li>
                             @endif
-                            <li class="nav-item ">
-                                <a class="nav-link" href="#">
-                                    <span>{{ __("artists.profile.menu.followMe") }}</span>
-                                    <span class="count">(7)</span>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#v-pills-follower" data-toggle="pill" id="v-pills-follower-tab" aria-controls="v-pills-follower" aria-selected="false">
+                                    <span>{{ __("artists.profile.menu.follower") }}</span>
+                                    <span class="count">({{ $user->FollowerCount() }})</span>
                                 </a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="#">
-                                    <span>{{ __("artists.profile.menu.followThem") }}</span>
-                                    <span class="count">(1)</span>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#v-pills-following" data-toggle="pill" id="v-pills-following-tab" aria-controls="v-pills-following" aria-selected="false">
+                                    <span>{{ __("artists.profile.menu.following") }}</span>
+                                    <span class="count followCount">({{ $user->FollowingCount() }})</span>
                                 </a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="#">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#v-pills-reviews" data-toggle="pill" id="v-pills-reviews-tab" aria-controls="v-pills-reviews" aria-selected="false">
                                     <span>{{ __("artists.profile.menu.myReviews") }}</span>
                                     <span class="count">(7)</span>
                                 </a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link" href="#">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#v-pills-messages" data-toggle="pill" id="v-pills-messages-tab" aria-controls="v-pills-messages" aria-selected="false">
                                     <span>{{ __("artists.profile.menu.myMessages") }}</span>
                                     <span class="count">(7)</span>
                                 </a>
                             </li>
                         @else
-                            <li class="nav-item active">
-                                <a class="nav-link" href="{{ route("showProfile", $user->slug) }}">
+                            <li class="nav-item">
+                                <a class="nav-link active" href="#v-pills-profile" data-toggle="pill" id="v-pills-profile-tab" aria-controls="v-pills-profile" aria-selected="true">
                                     <span>{{ __("artists.profile.menu.profile") }}</span>
                                 </a>
                             </li>
                             @if ( $user->user_role_id==3 )
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="#">
+                                    <a class="nav-link" href="#v-pills-creations" data-toggle="pill" id="v-pills-creations-tab" aria-controls="v-pills-creations" aria-selected="false">
                                         <span>{{ __("artists.profile.menu.creations") }}</span>
                                         <span class="count">(5)</span>
                                     </a>
                                 </li>
                             @endif
                             <li class="nav-item ">
-                                <a class="nav-link" href="#">
+                                <a class="nav-link" href="#v-pills-reviews" data-toggle="pill" id="v-pills-reviews-tab" aria-controls="v-pills-reviews" aria-selected="false">
                                     <span>{{ __("artists.profile.menu.reviews") }}</span>
                                     <span class="count">(7)</span>
                                 </a>
@@ -225,1184 +230,134 @@
                 </div>
             </div>
 
-            <input type="hidden" id="followUrl" value="{{ route("follow", $user->id) }}">
-            <input type="hidden" id="unFollowUrl" value="{{ route("unFollow", $user->id) }}">
+            <input type="hidden" id="followUrl" value="{{ route("follow") }}">
+            <input type="hidden" id="unFollowUrl" value="{{ route("unFollow") }}">
             <input type="hidden" id="unFollowTxt" value="{{ __('artists.artistSearchPage.unFollowTxt') }}">
             <input type="hidden" id="followTxt" value="{{ __('artists.artistSearchPage.followTxt') }}">
-            <input type="hidden" id="userId" value="{{ Auth::user() ? Auth::user()->id : "" }}">
-
-
-
-
-
-
-
-
 
             <div class="col-sm-12 col-md-9">
-                <div class="profile-tab-content">
-                    <div class="row row-product-items row-product">
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom product-multiple-image">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="44"></a>
-                                    <div class="img-product-container">
-                                        <a
-                                            href="https://modesy.codingest.com/womens-ankle-boot-with-different-colors-44">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd29048dd613-00010505-98816045.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd29048dd613-00010505-98816045.jpg"
-                                                alt="Women's ankle boot with different colors"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd290beb6919-60220682-93963996.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd290beb6919-60220682-93963996.jpg"
-                                                alt="Women's ankle boot with different colors"
-                                                class="img-fluid img-product img-second lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="44"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a
-                                            href="https://modesy.codingest.com/womens-ankle-boot-with-different-colors-44">Women's
-                                            ankle boot with different colors</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>56</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom product-multiple-image">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="42"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/navy-polka-dot-dress-42">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd23a9dc08a5-50988111-96549491.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd23a9dc08a5-50988111-96549491.jpg"
-                                                alt="Navy polka dot dress" class="img-fluid img-product lazyloaded">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd23b3143086-87883485-44102904.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd23b3143086-87883485-44102904.jpg"
-                                                alt="Navy polka dot dress"
-                                                class="img-fluid img-product img-second lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="42"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <span class="badge badge-dark badge-promoted">Featured</span>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/navy-polka-dot-dress-42">Navy polka dot
-                                            dress</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>1</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <del class="discount-original-price">
-                                            <span>$</span>99 </del>
-                                        <span class="price"><span>$</span>69.30</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="40"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/modern-grey-couch-and-pillowsg-40">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd1fa72f1171-75060829-27916481.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd1fa72f1171-75060829-27916481.jpg"
-                                                alt="Modern grey couch and pillows"
-                                                class="img-fluid img-product lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="40"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <span class="badge badge-dark badge-promoted">Featured</span>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/modern-grey-couch-and-pillowsg-40">Modern
-                                            grey couch and pillows</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>299</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom product-multiple-image">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="38"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/women-kipling-bailey-saddle-handbag-38">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd0d4f4f58d5-00931623-74345364.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd0d4f4f58d5-00931623-74345364.jpg"
-                                                alt="Women kipling bailey saddle handbag"
-                                                class="img-fluid img-product lazyloaded">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd0d43d0ccd6-58673782-44342539.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbd0d43d0ccd6-58673782-44342539.jpg"
-                                                alt="Women kipling bailey saddle handbag"
-                                                class="img-fluid img-product img-second lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="38"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <span class="badge badge-dark badge-promoted">Featured</span>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/women-kipling-bailey-saddle-handbag-38">Women
-                                            kipling bailey saddle handbag</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <del class="discount-original-price">
-                                            <span>$</span>49 </del>
-                                        <span class="price"><span>$</span>46.55</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom product-multiple-image">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="36"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/animal-colorful-digital-prints-36">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc5575ee475-30616963-75102995.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc5575ee475-30616963-75102995.jpg"
-                                                alt="Animal colorful digital prints"
-                                                class="img-fluid img-product lazyloaded">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc5503df352-20303052-61582754.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc5503df352-20303052-61582754.jpg"
-                                                alt="Animal colorful digital prints"
-                                                class="img-fluid img-product img-second lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="36"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <span class="badge badge-dark badge-promoted">Featured</span>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/animal-colorful-digital-prints-36">Animal
-                                            colorful digital prints</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <del class="discount-original-price">
-                                            <span>$</span>11.90 </del>
-                                        <span class="price"><span>$</span>10.12</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom product-multiple-image">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="35"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/seychelles-womens-brown-ankle-bootie-35">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc4b05fd1f9-90975091-24998747.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc4b05fd1f9-90975091-24998747.jpg"
-                                                alt="Seychelles women's brown ankle bootie"
-                                                class="img-fluid img-product lazyloaded">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc4a717c576-68908874-15999311.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc4a717c576-68908874-15999311.jpg"
-                                                alt="Seychelles women's brown ankle bootie"
-                                                class="img-fluid img-product img-second ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="35"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/seychelles-womens-brown-ankle-bootie-35">Seychelles
-                                            women's brown ankle bootie</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <a href="https://modesy.codingest.com/seychelles-womens-brown-ankle-bootie-35"
-                                            class="a-meta-request-quote">Request a Quote</a>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="33"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/ship-illustration-royalty-free-image-33">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc142101ea1-98163083-40344738.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcc142101ea1-98163083-40344738.jpg"
-                                                alt="Ship illustration royalty free image"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="33"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/ship-illustration-royalty-free-image-33">Ship
-                                            illustration royalty free image</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>9.90</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="32"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/men-outerwear-navy-color-32">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcbf66bc19e6-48564138-57557701.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcbf66bc19e6-48564138-57557701.jpg"
-                                                alt="Men outerwear navy color"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="32"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/men-outerwear-navy-color-32">Men outerwear
-                                            navy color</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <del class="discount-original-price">
-                                            <span>$</span>99 </del>
-                                        <span class="price"><span>$</span>84.15</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable item-wishlist"
-                                        data-product-id="30"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/animation-of-popular-vacation-spots-30">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcbd3517f815-83697916-95635151.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcbd3517f815-83697916-95635151.jpg"
-                                                alt="Animation of popular vacation spots"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="30"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/animation-of-popular-vacation-spots-30">Animation
-                                            of popular vacation spots</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>1</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>8.90</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable item-wishlist"
-                                        data-product-id="29"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/futuristic-landscape-animation-29">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcbc82ad5777-93614339-49143898.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcbc82ad5777-93614339-49143898.jpg"
-                                                alt="Futuristic landscape animation"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="29"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/futuristic-landscape-animation-29">Futuristic
-                                            landscape animation</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>1</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price-free">Free</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="28"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/mens-sport-shoe-28">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcbb9562bb63-82868344-77756087.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcbb9562bb63-82868344-77756087.jpg"
-                                                alt="Men's sport shoe"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="28"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/mens-sport-shoe-28">Men's sport shoe</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <del class="discount-original-price">
-                                            <span>$</span>49 </del>
-                                        <span class="price"><span>$</span>44.10</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="26"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/adidas-daily-unisex-shoes-26">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcb6a21b4331-41670683-73156524.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbcb6a21b4331-41670683-73156524.jpg"
-                                                alt="Adidas daily unisex shoes"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="26"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/adidas-daily-unisex-shoes-26">Adidas daily
-                                            unisex shoes</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>49</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="24"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/motivation-piano-with-cello-and-drums-24">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc9fa125df01-11906965-30878631.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc9fa125df01-11906965-30878631.jpg"
-                                                alt="Motivation piano with cello and drums"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="24"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/motivation-piano-with-cello-and-drums-24">Motivation
-                                            piano with cello and drums</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>19</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom product-multiple-image">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="22"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/adorable-animals-photo-pack-22">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc9c18ecbc08-67066957-65728559.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc9c18ecbc08-67066957-65728559.jpg"
-                                                alt="Adorable animals photo pack"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc9c25e23df9-13733811-14119285.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc9c25e23df9-13733811-14119285.jpg"
-                                                alt="Adorable animals photo pack"
-                                                class="img-fluid img-product img-second ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="22"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <span class="badge badge-dark badge-promoted">Featured</span>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/adorable-animals-photo-pack-22">Adorable
-                                            animals photo pack</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>19</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="20"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/animation-of-a-cyclist-moving-fast-20">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc9a82c35a95-54856537-76044207.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc9a82c35a95-54856537-76044207.jpg"
-                                                alt="Animation of a cyclist moving fast"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="20"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/animation-of-a-cyclist-moving-fast-20">Animation
-                                            of a cyclist moving fast</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>9.90</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="18"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/women-casual-dress-18">
-                                            <img src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc95a53a3518-30649342-91186313.jpg"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc95a53a3518-30649342-91186313.jpg"
-                                                alt="Women casual dress"
-                                                class="img-fluid img-product ls-is-cached lazyloaded">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="18"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/women-casual-dress-18">Women casual
-                                            dress</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>1</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <del class="discount-original-price">
-                                            <span>$</span>69 </del>
-                                        <span class="price"><span>$</span>55.20</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="17"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/moment-of-inspiration-piano-music-17">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc94d0930558-24316749-48720068.jpg"
-                                                alt="Moment of inspiration piano music"
-                                                class="lazyload img-fluid img-product">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="17"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <span class="badge badge-dark badge-promoted">Featured</span>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/moment-of-inspiration-piano-music-17">Moment
-                                            of inspiration piano music</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>15</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="15"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/women-vintage-collage-art-design-15">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc92608ec880-38956588-90513060.jpg"
-                                                alt="Women vintage collage art design"
-                                                class="lazyload img-fluid img-product">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="15"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/women-vintage-collage-art-design-15">Women
-                                            vintage collage art design</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <del class="discount-original-price">
-                                            <span>$</span>14.90 </del>
-                                        <span class="price"><span>$</span>11.92</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="14"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/sun-hat-for-women-protection-cap-14">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc915ce2aa22-34012151-98072943.jpg"
-                                                alt="Sun hat for women protection cap"
-                                                class="lazyload img-fluid img-product">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="14"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <span class="badge badge-dark badge-promoted">Featured</span>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/sun-hat-for-women-protection-cap-14">Sun
-                                            hat for women protection cap</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>1</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <del class="discount-original-price">
-                                            <span>$</span>29 </del>
-                                        <span class="price"><span>$</span>20.30</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom product-multiple-image">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="12"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/light-blue-women-shirt-12">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc8fa807ae22-23197543-40847643.jpg"
-                                                alt="Light blue women shirt" class="lazyload img-fluid img-product">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc8fac423be5-26867005-94627778.jpg"
-                                                alt="Light blue women shirt"
-                                                class="lazyload img-fluid img-product img-second">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="12"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/light-blue-women-shirt-12">Light blue
-                                            women shirt</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>34</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="10"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/women-red-casual-dress-10">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc8de5eb58a6-54144028-51780136.jpg"
-                                                alt="Women red casual dress" class="lazyload img-fluid img-product">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="10"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/women-red-casual-dress-10">Women red
-                                            casual dress</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>1</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>69</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom product-multiple-image">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="8"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/handmade-cute-handbag-8">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc8c7340b9d1-03320308-33869891.jpg"
-                                                alt="Handmade cute handbag" class="lazyload img-fluid img-product">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc8c7c6bc671-32493028-68488086.jpg"
-                                                alt="Handmade cute handbag"
-                                                class="lazyload img-fluid img-product img-second">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="8"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <span class="badge badge-dark badge-promoted">Featured</span>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/handmade-cute-handbag-8">Handmade cute
-                                            handbag</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>36</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom product-multiple-image">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="6"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/women-black-leather-handbag-6">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc82cd7505d2-40858022-90168752.jpg"
-                                                alt="Women black leather handbag"
-                                                class="lazyload img-fluid img-product">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc82d3216457-67614137-72972769.jpg"
-                                                alt="Women black leather handbag"
-                                                class="lazyload img-fluid img-product img-second">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="6"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/women-black-leather-handbag-6">Women black
-                                            leather handbag</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>0</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>39</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-6 col-sm-4 col-md-4 col-lg-3 col-product">
-                            <div class="product-item">
-                                <div class="row-custom">
-                                    <a class="item-wishlist-button item-wishlist-enable " data-product-id="3"></a>
-                                    <div class="img-product-container">
-                                        <a href="https://modesy.codingest.com/varient-news-magazine-script-3">
-                                            <img src="https://modesy.codingest.com/assets/img/img_bg_product_small.png"
-                                                data-src="https://modesy.codingest.com/uploads/images/202011/img_x300_5fbc7e0f6b9c44-35183826-27753453.jpg"
-                                                alt="Varient - News &amp; Magazine Script"
-                                                class="lazyload img-fluid img-product">
-                                        </a>
-                                        <div class="product-item-options">
-                                            <a href="javascript:void(0)" class="item-option btn-add-remove-wishlist"
-                                                data-toggle="tooltip" data-placement="left" data-product-id="3"
-                                                data-reload="0" title="" data-original-title="Wishlist">
-                                                <i class="icon-heart-o"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row-custom item-details">
-                                    <h3 class="product-title">
-                                        <a href="https://modesy.codingest.com/varient-news-magazine-script-3">Varient -
-                                            News &amp; Magazine Script</a>
-                                    </h3>
-                                    <p class="product-user text-truncate">
-                                        <a href="https://modesy.codingest.com/profile/admin">
-                                            admin </a>
-                                    </p>
-                                    <div class="product-item-rating">
-                                        <div class="rating">
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                            <i class="icon-star-o"></i>
-                                        </div> <span class="item-wishlist"><i class="icon-heart-o"></i>1</span>
-                                    </div>
-                                    <div class="item-meta">
-                                        <span class="price"><span>$</span>45</span>
-                                    </div>
-                                </div>
-                            </div>
-
+                <div class="tab-content" id="v-pills-tabContent">
+                    <div class="profile-tab-content tab-pane show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                        <div class="row row-product-items row-product">
+                            PROFILE
                         </div>
                     </div>
-                </div>
-                <div class="product-list-pagination">
-                    <ul class="pagination">
-                        <li class="disabled"></li>
-                        <li class="active page-num"><a href="#">1<span class="sr-only"></span></a></li>
-                        <li class="page-num"><a href="https://modesy.codingest.com/profile/admin?page=2"
-                                data-ci-pagination-page="2">2</a></li>
-                        <li class="next"><a href="https://modesy.codingest.com/profile/admin?page=2"
-                                data-ci-pagination-page="2" rel="next">›</a></li>
-                    </ul>
-                </div>
-                <div class="row-custom">
-                    <!--print banner-->
 
+                    <div class="profile-tab-content tab-pane fade" id="v-pills-reviews" role="tabpanel" aria-labelledby="v-pills-reviews-tab">
+                        <div class="row">
+                            REVIEWS
+                        </div>
+                    </div>
 
+                    @if ( $user->user_role_id==3 )
+                        <div class="profile-tab-content tab-pane fade" id="v-pills-creations" role="tabpanel" aria-labelledby="v-pills-creations-tab">
+                            <div class="row">
+                                CREATIONS
+                            </div>
+                        </div>
+                    @endif
+
+                    @if ( Auth::user() && Auth::user()->id==$user->id )
+                        <div class="profile-tab-content tab-pane fade" id="v-pills-follower" role="tabpanel" aria-labelledby="v-pills-follower-tab">
+                            <div class="row">
+                                @if ( count($follower) )
+                                    @foreach ($follower as $follow)
+                                        <div class="col-md-6 col-sm-6 col-12">
+                                            <div class="member-list-item">
+                                                <div class="left">
+                                                    <a href="{{ route("showProfile", $follow->follower->slug) }}">
+                                                        @if ( $follow->follower->avatar )
+                                                            <img src="/uploads/{{ $follow->follower->slug }}/avatar.png" alt="{{ $follow->follower->name }}" class="img-fluid img-profile ls-is-cached lazyloaded">
+                                                        @else
+                                                            <img src="/assets/images/user.png" alt="{{ $follow->follower->name }}" class="img-fluid img-profile ls-is-cached lazyloaded">
+                                                        @endif
+                                                    </a>
+                                                </div>
+                                                <div class="right">
+                                                    <a href="{{ route("showProfile", $follow->follower->slug) }}">
+                                                        <p class="username">{{ $follow->follower->name }}</p>
+                                                    </a>
+                                                    <p>
+                                                        {{ __("artists.artistSearchPage.creations") }} XX
+                                                    </p>
+
+                                                    <p>
+                                                        @if ( Auth::user() && Auth::user()->isFollow($follow->from_user_id) )
+                                                            <button class="btn btn-md btn-outline-gray follow unfollow" aria-data="{{ $follow->from_user_id }}">
+                                                                <div class="d-none follow-spinner"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
+                                                                <i class="icon-user-minus"></i>{{ __('artists.artistSearchPage.unFollowTxt') }}
+                                                            </button>
+                                                        @elseif( Auth::user() && !Auth::user()->isFollow($follow->from_user_id) )
+                                                            <button class="btn btn-md btn-outline-gray follow" aria-data="{{ $follow->from_user_id }}">
+                                                                <div class="d-none follow-spinner"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
+                                                                <i class="icon-user-plus"></i>{{ __('artists.artistSearchPage.followTxt') }}
+                                                            </button>
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <h2>{{ __('artists.profile.follower.nobodyFollower') }}</h2>
+                                @endif
+                            </div>
+                        </div>
+
+                        <div class="profile-tab-content tab-pane fade following-tab" id="v-pills-following" role="tabpanel" aria-labelledby="v-pills-following-tab">
+                            <div class="row">
+                                @if ( count($following) )
+                                    @foreach ($following as $follow)
+                                        <div class="col-md-6 col-sm-6 col-12 item-{{ $follow->to_user_id }}">
+                                            <div class="member-list-item">
+                                                <div class="left">
+                                                    <a href="{{ route("showProfile", $follow->following->slug) }}">
+                                                        @if ( $follow->following->avatar )
+                                                            <img src="/uploads/{{ $follow->following->slug }}/avatar.png" alt="{{ $follow->following->name }}" class="img-fluid img-profile ls-is-cached lazyloaded">
+                                                        @else
+                                                            <img src="/assets/images/user.png" alt="{{ $follow->following->name }}" class="img-fluid img-profile ls-is-cached lazyloaded">
+                                                        @endif
+                                                    </a>
+                                                </div>
+                                                <div class="right">
+                                                    <a href="{{ route("showProfile", $follow->following->slug) }}">
+                                                        <p class="username">{{ $follow->following->name }}</p>
+                                                    </a>
+                                                    <p>
+                                                        {{ __("artists.artistSearchPage.creations") }} XX
+                                                    </p>
+
+                                                    <p>
+                                                        <button class="btn btn-md btn-outline-gray follow unfollow my-profile" aria-data="{{ $follow->to_user_id }}">
+                                                            <div class="d-none follow-spinner"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
+                                                            <i class="icon-user-minus"></i>{{ __('artists.artistSearchPage.unFollowTxt') }}
+                                                        </button>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <h2>{{ __('artists.profile.following.nobodyFollowing') }}</h2>
+                                @endif
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="profile-tab-content tab-pane fade" id="v-pills-messages" role="tabpanel" aria-labelledby="v-pills-messages-tab">
+                            <div class="row">
+                                MESSAGES
+                            </div>
+                        </div>
+                    @endif
                 </div>
-                <div id="csrf" class="d-none">@csrf</div>
-                <div id="uid" class="d-none">{{ $user->id }}</div>
+                
             </div>
         </div>
     </div>
 </div>
+
+<div id="csrf" class="d-none">@csrf</div>
+<div id="uid" class="d-none">{{ $user->id }}</div>
 @endsection
