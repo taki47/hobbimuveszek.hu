@@ -47,12 +47,14 @@ class AuthenticationController extends Controller
 
     public function LoginAttempt(Request $request)
     {
-        //captcha ellenőrzése
-        $captcha = ApiController::CheckCaptcha($request->gRecaptchaResponse);
-        if ( !$captcha )
-            return back()
-                ->withErrors(__('auth.register.validation.gRecaptchaResponse'))
-                ->withInput();
+        if ( !$request->ajax ) {
+            //captcha ellenőrzése
+            $captcha = ApiController::CheckCaptcha($request->gRecaptchaResponse);
+            if ( !$captcha )
+                return back()
+                    ->withErrors(__('auth.register.validation.gRecaptchaResponse'))
+                    ->withInput();
+        }
 
 
         $credentials = $request->only('email', 'password');
@@ -60,7 +62,6 @@ class AuthenticationController extends Controller
         
         if (Auth::attempt($credentials,$request->remember)) {
             //auth passed
-
             if ( Auth::user()->user_role_id=="4" ) {
                 $user = User::find(Auth::user()->id);
                 $apiToken = Hash::make(Carbon::now());
@@ -68,9 +69,18 @@ class AuthenticationController extends Controller
                 $user->save();
             }
 
-            return redirect()->intended('/');
+            if ( isset($request->ajax) ) {
+                return 1;
+            } else {
+                return redirect()->intended('/');
+            }
         } else {
-            return back()->withErrors(__('auth.login.failed'));
+            if ( isset($request->ajax) ) {
+                $error["error-msg"] = __('auth.login.failed');
+                return $error;
+            } else {
+                return back()->withErrors(__('auth.login.failed'));
+            }
         }
     }
 

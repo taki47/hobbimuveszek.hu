@@ -35,9 +35,11 @@
                                         </span>
                                     </p>
                                 </div>
+
                                 <div class="row-custom">
-                                    <p class="description">
-                                    </p>
+                                    <h3>
+                                        {{ $user->name }}
+                                    </h3>
                                 </div>
 
                                 <div class="row-custom user-contact">
@@ -149,42 +151,66 @@
                 <!--profile page tabs-->
                 <div class="profile-tabs">
                     <ul class="nav">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="https://modesy.codingest.com/profile/admin">
-                                <span>Products</span>
-                                <span class="count">(26)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="https://modesy.codingest.com/wishlist/admin">
-                                <span>Wishlist</span>
-                                <span class="count">(5)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="https://modesy.codingest.com/downloads">
-                                <span>Downloads</span>
-                                <span class="count">(7)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="https://modesy.codingest.com/followers/admin">
-                                <span>Followers</span>
-                                <span class="count">(1)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="https://modesy.codingest.com/following/admin">
-                                <span>Following</span>
-                                <span class="count">(7)</span>
-                            </a>
-                        </li>
-                        <li class="nav-item ">
-                            <a class="nav-link" href="https://modesy.codingest.com/reviews/admin">
-                                <span>Reviews</span>
-                                <span class="count">(2)</span>
-                            </a>
-                        </li>
+                        @if ( Auth::user()->id==$user->id )
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ route("showProfile", \Auth::user()->id) }}">
+                                    <span>{{ __("artists.profile.menu.myProfile") }}</span>
+                                </a>
+                            </li>
+                            @if ( $user->user_role_id==3 )
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="https://modesy.codingest.com/wishlist/admin">
+                                        <span>{{ __("artists.profile.menu.myCreations") }}</span>
+                                        <span class="count">(5)</span>
+                                    </a>
+                                </li>
+                            @endif
+                            <li class="nav-item ">
+                                <a class="nav-link" href="https://modesy.codingest.com/downloads">
+                                    <span>{{ __("artists.profile.menu.followMe") }}</span>
+                                    <span class="count">(7)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="https://modesy.codingest.com/followers/admin">
+                                    <span>{{ __("artists.profile.menu.followThem") }}</span>
+                                    <span class="count">(1)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="https://modesy.codingest.com/following/admin">
+                                    <span>{{ __("artists.profile.menu.myReviews") }}</span>
+                                    <span class="count">(7)</span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link" href="https://modesy.codingest.com/following/admin">
+                                    <span>{{ __("artists.profile.menu.myMessages") }}</span>
+                                    <span class="count">(7)</span>
+                                </a>
+                            </li>
+                        @else
+                            <li class="nav-item active">
+                                <a class="nav-link" href="{{ route("showProfile", \Auth::user()->id) }}">
+                                    <span>{{ __("artists.profile.menu.profile") }}</span>
+                                </a>
+                            </li>
+                            @if ( $user->user_role_id==3 )
+                                <li class="nav-item ">
+                                    <a class="nav-link" href="https://modesy.codingest.com/wishlist/admin">
+                                        <span>{{ __("artists.profile.menu.creations") }}</span>
+                                        <span class="count">(5)</span>
+                                    </a>
+                                </li>
+                            @endif
+                            <li class="nav-item ">
+                                <a class="nav-link" href="https://modesy.codingest.com/following/admin">
+                                    <span>{{ __("artists.profile.menu.reviews") }}</span>
+                                    <span class="count">(7)</span>
+                                </a>
+                            </li>
+                        @endif
+                        
                     </ul>
                 </div>
 

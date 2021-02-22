@@ -20,6 +20,7 @@ return [
         'register'     => 'Regisztráció',
         'failed'       => 'A megadott felhasználónév vagy jelszó nem megfelelő!',
         'lostPassword' => 'Elfelejtettem a jelszavam',
+        "dontHaveAnAccount" => "Nincs még fiókod?"
     ],
 
     'register' => [

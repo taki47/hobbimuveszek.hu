@@ -48,7 +48,9 @@ class ProfileController extends Controller
      */
     public function show($userSlug)
     {
-        $user = User::where("slug",$userSlug)->first();
+        $user = User::where("slug",$userSlug)
+                    ->where("user_status_id", 2)
+                    ->first();
         if ( !$user )
             abort(404);
 
