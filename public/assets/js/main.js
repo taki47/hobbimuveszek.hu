@@ -122,3 +122,134 @@ $(".search-select .dropdown-item").on("click", function() {
         $(".search-form").attr("action",searchArtistURL);
     }
 });
+
+$(".follow").on('click', function(e){
+    e.preventDefault();
+    $(".follow-spinner").removeClass("d-none").addClass("d-inline-block");
+    $button = $(this);
+    if( $button.hasClass('unfollow') ) {
+        //unfollow
+        $(".follow-spinner").removeClass("d-none").addClass("d-inline-block");
+        let userId = $("#userId").val();
+        let csrf   = $('meta[name="csrf-token"]').attr('content');
+        let followTxt = "<div class='d-none follow-spinner'><span class='loader'><span class='loader-box'></span><span class='loader-box'></span><span class='loader-box'></span></span></div>";
+        followTxt += "<i class='icon-user-plus'></i> "+$("#followTxt").val();
+
+        if ( userId!="" ) {
+            let url = $("#unFollowUrl").val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    userId: userId,
+                    _token: csrf
+                },
+                success: function (data,status,xhr) {
+                    if ( data ) {
+                        $(".follow-spinner").removeClass("d-inline-block").addClass("d-none");
+                        $button.html(followTxt);
+                        $button.removeClass("unfollow");
+                    }
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.error(errorMessage);
+                    return false;
+                }
+            });
+        }
+    } else {
+        //follow
+        let userId = $("#userId").val();
+        let csrf   = $('meta[name="csrf-token"]').attr('content');
+        let unFollowTxt = "<div class='d-none follow-spinner'><span class='loader'><span class='loader-box'></span><span class='loader-box'></span><span class='loader-box'></span></span></div>";
+        unFollowTxt += "<i class='icon-user-minus'></i> "+$("#unFollowTxt").val();
+
+        if ( userId!="" ) {
+            let url = $("#followUrl").val();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: {
+                    userId: userId,
+                    _token: csrf
+                },
+                success: function (data,status,xhr) {
+                    if ( data ) {
+                        $(".follow-spinner").removeClass("d-inline-block").addClass("d-none");
+                        $button.html(unFollowTxt);
+                        $button.addClass("unfollow");
+                    }
+                },
+                error: function (jqXhr, textStatus, errorMessage) {
+                    console.error(errorMessage);
+                    return false;
+                }
+            });
+        }
+    }
+});
+
+/*$(".follow").on("click", function() {
+    console.log("FOLLOW");
+    $(".follow-spinner").removeClass("d-none").addClass("d-inline-block");
+
+    let userId = $("#userId").val();
+    let csrf   = $('meta[name="csrf-token"]').attr('content');
+    let unFollowTxt = "<div class='d-none follow-spinner'><span class='loader'><span class='loader-box'></span><span class='loader-box'></span><span class='loader-box'></span></span></div>";
+    unFollowTxt += "<i class='icon-user-minus'></i> "+$("#unFollowTxt").val();
+
+    if ( userId!="" ) {
+        let url = $("#followUrl").val();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                userId: userId,
+                _token: csrf
+            },
+            success: function (data,status,xhr) {
+                if ( data ) {
+                    $(".follow-spinner").removeClass("d-inline-block").addClass("d-none");
+                    $(".follow").html(unFollowTxt);
+                    $(".follow").removeClass("follow").addClass("unfollow");
+                }
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+                console.error(errorMessage);
+                return false;
+            }
+        });
+    }
+});
+
+$(".unfollow").on("click", function () {
+    console.log("UNFOLLOW");
+    $(".follow-spinner").removeClass("d-none").addClass("d-inline-block");
+    let userId = $("#userId").val();
+    let csrf   = $('meta[name="csrf-token"]').attr('content');
+    let followTxt = "<div class='d-none follow-spinner'><span class='loader'><span class='loader-box'></span><span class='loader-box'></span><span class='loader-box'></span></span></div>";
+    followTxt += "<i class='icon-user-plus'></i> "+$("#followTxt").val();
+
+    if ( userId!="" ) {
+        let url = $("#unFollowUrl").val();
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {
+                userId: userId,
+                _token: csrf
+            },
+            success: function (data,status,xhr) {
+                if ( data ) {
+                    $(".follow-spinner").removeClass("d-inline-block").addClass("d-none");
+                    $(".unfollow").html(followTxt);
+                    $(".unfollow").addClass("follow").removeClass("unfollow");
+                }
+            },
+            error: function (jqXhr, textStatus, errorMessage) {
+                console.error(errorMessage);
+                return false;
+            }
+        });
+    }
+});*/

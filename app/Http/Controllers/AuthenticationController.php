@@ -70,14 +70,17 @@ class AuthenticationController extends Controller
             }
 
             if ( isset($request->ajax) ) {
-                return 1;
+                $result["result"] = "1";
+                $result["error_msg"] = "";
+                return $result;
             } else {
                 return redirect()->intended('/');
             }
         } else {
             if ( isset($request->ajax) ) {
-                $error["error-msg"] = __('auth.login.failed');
-                return $error;
+                $result["result"] = "0";
+                $result["error_msg"] = __('auth.login.failed');
+                return $result;
             } else {
                 return back()->withErrors(__('auth.login.failed'));
             }

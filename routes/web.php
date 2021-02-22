@@ -65,6 +65,10 @@ Route::group(['middleware'=>'language'],function () {
     Route::post("/muveszek", "SearchController@SearchArtist")->name("searchArtist");
     Route::post("/alkotasok", "SearchController@SearchCreation")->name("searchCreation");
 
+    /** FOLLOW */
+    Route::post("/follow/{userId}", "ProfileController@Follow")->name("follow");
+    Route::post("/unfollow/{userId}", "ProfileController@UnFollow")->name("unFollow");
+
     /** MORE PAGES */
     Route::any("/{slug}", "PublicController@showPage");
 

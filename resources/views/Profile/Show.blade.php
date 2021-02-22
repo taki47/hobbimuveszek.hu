@@ -18,11 +18,6 @@
                                 @endif
                             </div>
                             <div class="right">
-                                <div class="row-custom row-profile-username">
-                                    <h1 class="username">
-                                        <a href="https://modesy.codingest.com/profile/admin"></a>
-                                    </h1>
-                                </div>
                                 <div class="row-custom">
                                     <p class="p-last-seen">
                                         <span class="last-seen last-seen-{{ $user->isOnline() ? 'online' : 'offline' }}"> <i class="icon-circle"></i>
@@ -56,10 +51,6 @@
                                                     {{ __("artists.profile.show") }}
                                                 </button>
                                             </div>
-                                            
-                                            <!--<a href="javascript:void(0)" id="show_phone_number" class="d-inline-block">
-                                                {{ __("artists.profile.show") }}
-                                            </a>-->
                                         </span>
                                     @endif
                                     
@@ -115,7 +106,26 @@
                                 </div>
 
                                 <div class="row-custom profile-buttons">
-                                    <div class="buttons">
+                                    <div class="row-custom profile-buttons mb-2">
+                                        <div class="buttons">
+                                            <button class="btn btn-md btn-outline-gray" data-toggle="modal" data-target="#loginModal"><i class="icon-envelope"></i>Levelet írok neki</button>
+                                            
+                                            @if ( Auth::user() )
+                                                @if ( Auth::user()->isFollow($user->id) )
+                                                    <button class="btn btn-md btn-outline-gray follow unfollow">
+                                                        <div class="d-none follow-spinner"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
+                                                        <i class="icon-user-minus"></i>{{ __('artists.artistSearchPage.unFollowTxt') }}
+                                                    </button>
+                                                @else
+                                                    <button class="btn btn-md btn-outline-gray follow">
+                                                        <div class="d-none follow-spinner"><span class="loader"><span class="loader-box"></span><span class="loader-box"></span><span class="loader-box"></span></span></div>
+                                                        <i class="icon-user-plus"></i>{{ __('artists.artistSearchPage.followTxt') }}
+                                                    </button>
+                                                @endif
+                                            @else
+                                                <button class="btn btn-md btn-outline-gray" data-toggle="modal" data-target="#loginModal"><i class="icon-user-plus"></i>{{ __('artists.artistSearchPage.followTxt') }}</button>
+                                            @endif
+                                        </div>
                                     </div>
 
                                     @if ( $socialMedias )
@@ -151,7 +161,7 @@
                 <!--profile page tabs-->
                 <div class="profile-tabs">
                     <ul class="nav">
-                        @if ( Auth::user()->id==$user->id )
+                        @if ( Auth::user() && Auth::user()->id==$user->id )
                             <li class="nav-item active">
                                 <a class="nav-link" href="{{ route("showProfile", \Auth::user()->id) }}">
                                     <span>{{ __("artists.profile.menu.myProfile") }}</span>
@@ -159,52 +169,52 @@
                             </li>
                             @if ( $user->user_role_id==3 )
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="https://modesy.codingest.com/wishlist/admin">
+                                    <a class="nav-link" href="#">
                                         <span>{{ __("artists.profile.menu.myCreations") }}</span>
                                         <span class="count">(5)</span>
                                     </a>
                                 </li>
                             @endif
                             <li class="nav-item ">
-                                <a class="nav-link" href="https://modesy.codingest.com/downloads">
+                                <a class="nav-link" href="#">
                                     <span>{{ __("artists.profile.menu.followMe") }}</span>
                                     <span class="count">(7)</span>
                                 </a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="https://modesy.codingest.com/followers/admin">
+                                <a class="nav-link" href="#">
                                     <span>{{ __("artists.profile.menu.followThem") }}</span>
                                     <span class="count">(1)</span>
                                 </a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="https://modesy.codingest.com/following/admin">
+                                <a class="nav-link" href="#">
                                     <span>{{ __("artists.profile.menu.myReviews") }}</span>
                                     <span class="count">(7)</span>
                                 </a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link" href="https://modesy.codingest.com/following/admin">
+                                <a class="nav-link" href="#">
                                     <span>{{ __("artists.profile.menu.myMessages") }}</span>
                                     <span class="count">(7)</span>
                                 </a>
                             </li>
                         @else
                             <li class="nav-item active">
-                                <a class="nav-link" href="{{ route("showProfile", \Auth::user()->id) }}">
+                                <a class="nav-link" href="{{ route("showProfile", $user->slug) }}">
                                     <span>{{ __("artists.profile.menu.profile") }}</span>
                                 </a>
                             </li>
                             @if ( $user->user_role_id==3 )
                                 <li class="nav-item ">
-                                    <a class="nav-link" href="https://modesy.codingest.com/wishlist/admin">
+                                    <a class="nav-link" href="#">
                                         <span>{{ __("artists.profile.menu.creations") }}</span>
                                         <span class="count">(5)</span>
                                     </a>
                                 </li>
                             @endif
                             <li class="nav-item ">
-                                <a class="nav-link" href="https://modesy.codingest.com/following/admin">
+                                <a class="nav-link" href="#">
                                     <span>{{ __("artists.profile.menu.reviews") }}</span>
                                     <span class="count">(7)</span>
                                 </a>
@@ -213,17 +223,22 @@
                         
                     </ul>
                 </div>
-
-                <div class="row-custom">
-                    <!--Include banner-->
-                    <!--print sidebar banner-->
-
-
-
-
-                </div>
-
             </div>
+
+            <input type="hidden" id="followUrl" value="{{ route("follow", $user->id) }}">
+            <input type="hidden" id="unFollowUrl" value="{{ route("unFollow", $user->id) }}">
+            <input type="hidden" id="unFollowTxt" value="{{ __('artists.artistSearchPage.unFollowTxt') }}">
+            <input type="hidden" id="followTxt" value="{{ __('artists.artistSearchPage.followTxt') }}">
+            <input type="hidden" id="userId" value="{{ Auth::user() ? Auth::user()->id : "" }}">
+
+
+
+
+
+
+
+
+
             <div class="col-sm-12 col-md-9">
                 <div class="profile-tab-content">
                     <div class="row row-product-items row-product">

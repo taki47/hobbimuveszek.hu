@@ -10,6 +10,7 @@ use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Facades\Cache;
 
 use App\Models\User_billing_data;
+use App\Models\Follow;
 
 class User extends Authenticatable
 {
@@ -76,5 +77,16 @@ class User extends Authenticatable
     public function billing()
     {
         return $this->belongsTo('App\Models\User_billing_data', "id", "user_id");
+    }
+
+    public function isFollow($userId)
+    {
+        $follow = Follow::where("to_user_id",$userId)->count();
+
+        if ( $follow>0 ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

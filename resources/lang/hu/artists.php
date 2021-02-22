@@ -21,6 +21,7 @@ return [
     "artistSearchPage" => [
         "title" => "Művészek",
         "creations" => "Alkotások: ",
-        "follow" => "Követem"
+        "followTxt" => "Követem",
+        "unFollowTxt" => "Követés leállítása"
     ]
 ];
